@@ -36,7 +36,6 @@
             this.menuItemMain = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemMute = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cboCharacter = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,10 +45,12 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cboTimeout = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.chkMute = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.panelResearch = new System.Windows.Forms.FlowLayoutPanel();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.notifyMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -108,17 +109,6 @@
             this.menuItemExit.ToolTipText = "Exit Application";
             this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
             // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(197, 201);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 9999;
-            this.button1.Text = "Close";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.cboCharacter);
@@ -139,12 +129,13 @@
             this.cboCharacter.Name = "cboCharacter";
             this.cboCharacter.Size = new System.Drawing.Size(134, 21);
             this.cboCharacter.TabIndex = 1;
+            this.cboCharacter.SelectedIndexChanged += new System.EventHandler(this.cboCharacter_SelectedIndexChanged);
             // 
             // label2
             // 
             this.label2.Location = new System.Drawing.Point(6, 49);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(54, 23);
+            this.label2.Size = new System.Drawing.Size(54, 18);
             this.label2.TabIndex = 2;
             this.label2.Text = "Character";
             // 
@@ -163,6 +154,7 @@
             this.cboAccount.Name = "cboAccount";
             this.cboAccount.Size = new System.Drawing.Size(134, 21);
             this.cboAccount.TabIndex = 0;
+            this.cboAccount.SelectedIndexChanged += new System.EventHandler(this.cboAccount_SelectedIndexChanged);
             // 
             // cboNotifyStyle
             // 
@@ -176,12 +168,11 @@
             // 
             this.groupBox2.Controls.Add(this.cboTimeout);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.chkMute);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.cboNotifyStyle);
-            this.groupBox2.Location = new System.Drawing.Point(13, 92);
+            this.groupBox2.Location = new System.Drawing.Point(278, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(259, 103);
+            this.groupBox2.Size = new System.Drawing.Size(259, 73);
             this.groupBox2.TabIndex = 10000;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Notification Appearance";
@@ -198,19 +189,9 @@
             // 
             this.label4.Location = new System.Drawing.Point(6, 49);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(108, 23);
+            this.label4.Size = new System.Drawing.Size(108, 18);
             this.label4.TabIndex = 6;
             this.label4.Text = "Notification Timeout";
-            // 
-            // chkMute
-            // 
-            this.chkMute.Location = new System.Drawing.Point(119, 73);
-            this.chkMute.Name = "chkMute";
-            this.chkMute.Size = new System.Drawing.Size(104, 24);
-            this.chkMute.TabIndex = 4;
-            this.chkMute.Text = "Mute";
-            this.chkMute.UseVisualStyleBackColor = true;
-            this.chkMute.CheckedChanged += new System.EventHandler(this.chkMute_CheckedChanged);
             // 
             // label3
             // 
@@ -222,7 +203,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(140, 201);
+            this.button2.Location = new System.Drawing.Point(480, 453);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(51, 23);
             this.button2.TabIndex = 10001;
@@ -232,7 +213,7 @@
             // 
             // linkLabel1
             // 
-            this.linkLabel1.Location = new System.Drawing.Point(18, 206);
+            this.linkLabel1.Location = new System.Drawing.Point(18, 458);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(124, 23);
             this.linkLabel1.TabIndex = 5;
@@ -240,16 +221,35 @@
             this.linkLabel1.Text = "ResearchDump AddOn";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // panelResearch
+            // 
+            this.panelResearch.Location = new System.Drawing.Point(12, 91);
+            this.panelResearch.Name = "panelResearch";
+            this.panelResearch.Size = new System.Drawing.Size(525, 356);
+            this.panelResearch.TabIndex = 10002;
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.Location = new System.Drawing.Point(148, 458);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(196, 23);
+            this.linkLabel2.TabIndex = 10003;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "Special thanks to Tamriel Trade Centre";
+            this.toolTip1.SetToolTip(this.linkLabel2, "Lua.dll used for deserialisation kindly provided by TTC");
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 236);
+            this.ClientSize = new System.Drawing.Size(549, 488);
+            this.Controls.Add(this.linkLabel2);
+            this.Controls.Add(this.panelResearch);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -273,9 +273,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuItemMain;
         private System.Windows.Forms.ToolStripMenuItem menuItemMute;
         private System.Windows.Forms.ToolStripMenuItem menuItemExit;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox chkMute;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cboNotifyStyle;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -287,6 +285,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.FlowLayoutPanel panelResearch;
+        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 
