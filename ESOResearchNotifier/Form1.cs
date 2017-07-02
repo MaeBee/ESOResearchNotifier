@@ -27,13 +27,16 @@ namespace ESOResearchNotifier
             cboTimeout.Items.Add(new ComboboxItem("5 seconds", 5000));
             cboTimeout.Items.Add(new ComboboxItem("8 seconds", 8000));
             cboTimeout.Items.Add(new ComboboxItem("10 seconds", 10000));
-            foreach (ComboboxItem item in cboTimeout.Items)
+            if (Config.ContainsKey("notifytimeout"))
             {
-                if (item.Text == Config["notifytimeout"])
+                foreach (ComboboxItem item in cboTimeout.Items)
                 {
-                    timeoutfound = true;
-                    cboTimeout.SelectedItem = item;
-                    break;
+                    if (item.Text == Config["notifytimeout"])
+                    {
+                        timeoutfound = true;
+                        cboTimeout.SelectedItem = item;
+                        break;
+                    }
                 }
             }
             if (!timeoutfound)
@@ -44,13 +47,16 @@ namespace ESOResearchNotifier
             bool notifystylefound = false;
             cboNotifyStyle.Items.Add(new ComboboxItem("Balloon", NotificationType.Balloon));
             cboNotifyStyle.Items.Add(new ComboboxItem("Toast", NotificationType.Toast));
-            foreach (ComboboxItem item in cboNotifyStyle.Items)
+            if (Config.ContainsKey("notifystyle"))
             {
-                if (item.Text == Config["notifystyle"])
+                foreach (ComboboxItem item in cboNotifyStyle.Items)
                 {
-                    notifystylefound = true;
-                    cboNotifyStyle.SelectedItem = item;
-                    break;
+                    if (item.Text == Config["notifystyle"])
+                    {
+                        notifystylefound = true;
+                        cboNotifyStyle.SelectedItem = item;
+                        break;
+                    }
                 }
             }
             if (!notifystylefound)
