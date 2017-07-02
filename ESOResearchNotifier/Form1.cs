@@ -13,21 +13,55 @@ namespace ESOResearchNotifier
         private enum NotificationType { Balloon, Toast };
         private bool Mute = false;
         private string SavedVars = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Elder Scrolls Online\\live\\SavedVariables");
+        private Dictionary<string, string> Config = new Dictionary<string, string>();
+        private string ConfigPath = Application.StartupPath + "\\ESOResearchNotifier.xml";
 
         public Form1()
         {
             InitializeComponent();
+            Config = XML.ReadData(ConfigPath);
 
+            bool timeoutfound = false;
             cboTimeout.Items.Add(new ComboboxItem("1 second", 1000));
             cboTimeout.Items.Add(new ComboboxItem("3 seconds", 3000));
             cboTimeout.Items.Add(new ComboboxItem("5 seconds", 5000));
             cboTimeout.Items.Add(new ComboboxItem("8 seconds", 8000));
             cboTimeout.Items.Add(new ComboboxItem("10 seconds", 10000));
-            cboTimeout.SelectedIndex = 2;
+            foreach (ComboboxItem item in cboTimeout.Items)
+            {
+                if (item.Text == Config["notifytimeout"])
+                {
+                    timeoutfound = true;
+                    cboTimeout.SelectedItem = item;
+                    break;
+                }
+            }
+            if (!timeoutfound)
+            {
+                cboTimeout.SelectedIndex = 2;
+            }
 
+            bool notifystylefound = false;
             cboNotifyStyle.Items.Add(new ComboboxItem("Balloon", NotificationType.Balloon));
             cboNotifyStyle.Items.Add(new ComboboxItem("Toast", NotificationType.Toast));
-            cboNotifyStyle.SelectedIndex = 0;
+            foreach (ComboboxItem item in cboNotifyStyle.Items)
+            {
+                if (item.Text == Config["notifystyle"])
+                {
+                    notifystylefound = true;
+                    cboNotifyStyle.SelectedItem = item;
+                    break;
+                }
+            }
+            if (!notifystylefound)
+            {
+                cboNotifyStyle.SelectedIndex = 0;
+            }
+
+            if (Config.ContainsKey("mute"))
+            {
+                menuItemMute.Checked = Convert.ToBoolean(Config["mute"]);
+            }
 
             fileSystemWatcher1.Path = SavedVars;
 
@@ -86,7 +120,23 @@ namespace ESOResearchNotifier
             }
             else
             {
-                cboAccount.SelectedIndex = 0;
+                bool found = false;
+                if (Config.ContainsKey("selectedaccount"))
+                {
+                    foreach (ComboboxItem item in cboAccount.Items)
+                    {
+                        if (item.Text == Config["selectedaccount"])
+                        {
+                            found = true;
+                            cboAccount.SelectedItem = item;
+                            break;
+                        }
+                    }
+                }
+                if (!found)
+                {
+                    cboAccount.SelectedIndex = 0;
+                }
             }
             //MessageBox.Show(debugstring);
         }
@@ -106,13 +156,10 @@ namespace ESOResearchNotifier
         private void menuItemMute_Click(object sender, EventArgs e)
         {
             Mute = menuItemMute.Checked;
+            Config["mute"] = Mute.ToString();
+            XML.WriteData(ConfigPath, Config);
         }
-
-        private void chkMute_CheckedChanged(object sender, EventArgs e)
-        {
-            Mute = menuItemMute.Checked;
-        }
-
+        
         private void menuItemExit_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -157,6 +204,8 @@ namespace ESOResearchNotifier
             panelResearch.Controls.Clear();
             cboCharacter.Items.Clear();
             ComboboxItem selectedAccount = (ComboboxItem)cboAccount.SelectedItem;
+            Config["selectedaccount"] = selectedAccount.Text;
+            XML.WriteData(ConfigPath, Config);
             foreach (KeyValuePair<string, object> accountCharacters in (Dictionary<string, object>)selectedAccount.Value)
             {
                 cboCharacter.Items.Add(new ComboboxItem(accountCharacters.Key, (Dictionary<string, object>)accountCharacters.Value));
@@ -167,7 +216,23 @@ namespace ESOResearchNotifier
             }
             else
             {
-                cboCharacter.SelectedIndex = 0;
+                bool found = false;
+                if (Config.ContainsKey("selectedchar"))
+                {
+                    foreach (ComboboxItem item in cboCharacter.Items)
+                    {
+                        if (item.Text == Config["selectedchar"])
+                        {
+                            found = true;
+                            cboCharacter.SelectedItem = item;
+                            break;
+                        }
+                    }
+                }
+                if (!found)
+                {
+                    cboCharacter.SelectedIndex = 0;
+                }
             }
         }
 
@@ -175,6 +240,8 @@ namespace ESOResearchNotifier
         {
             panelResearch.Controls.Clear();
             ComboboxItem selectedCharacter = (ComboboxItem)cboCharacter.SelectedItem;
+            Config["selectedchar"] = selectedCharacter.Text;
+            XML.WriteData(ConfigPath, Config);
             foreach (KeyValuePair<string, object> CraftingDiscipline in (Dictionary<string, object>)selectedCharacter.Value)
             {
                 if (CraftingDiscipline.Key == "0")
@@ -243,6 +310,20 @@ namespace ESOResearchNotifier
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://tamrieltradecentre.com/");
+        }
+
+        private void cboNotifyStyle_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboboxItem notifyStyle = (ComboboxItem)cboNotifyStyle.SelectedItem;
+            Config["notifystyle"] = notifyStyle.Text;
+            XML.WriteData(ConfigPath, Config);
+        }
+
+        private void cboTimeout_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboboxItem notifyTimeout = (ComboboxItem)cboTimeout.SelectedItem;
+            Config["notifytimeout"] = notifyTimeout.Text;
+            XML.WriteData(ConfigPath, Config);
         }
     }
 

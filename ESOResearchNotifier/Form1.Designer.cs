@@ -163,6 +163,7 @@
             this.cboNotifyStyle.Name = "cboNotifyStyle";
             this.cboNotifyStyle.Size = new System.Drawing.Size(134, 21);
             this.cboNotifyStyle.TabIndex = 2;
+            this.cboNotifyStyle.SelectedIndexChanged += new System.EventHandler(this.cboNotifyStyle_SelectedIndexChanged);
             // 
             // groupBox2
             // 
@@ -184,6 +185,7 @@
             this.cboTimeout.Name = "cboTimeout";
             this.cboTimeout.Size = new System.Drawing.Size(134, 21);
             this.cboTimeout.TabIndex = 3;
+            this.cboTimeout.SelectedIndexChanged += new System.EventHandler(this.cboTimeout_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -203,11 +205,11 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(480, 453);
+            this.button2.Location = new System.Drawing.Point(431, 453);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(51, 23);
+            this.button2.Size = new System.Drawing.Size(100, 23);
             this.button2.TabIndex = 10001;
-            this.button2.Text = "X";
+            this.button2.Text = "Test Notification";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 

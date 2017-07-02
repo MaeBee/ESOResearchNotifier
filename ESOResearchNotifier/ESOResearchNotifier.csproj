@@ -72,6 +72,7 @@
     <Compile Include="ResearchItem.Designer.cs">
       <DependentUpon>ResearchItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="XML.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -104,6 +105,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ESOResearchNotifier.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Lua.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
