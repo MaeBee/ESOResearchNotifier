@@ -129,6 +129,7 @@
             this.cboCharacter.Name = "cboCharacter";
             this.cboCharacter.Size = new System.Drawing.Size(134, 21);
             this.cboCharacter.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.cboCharacter, "Currently selected character");
             this.cboCharacter.SelectedIndexChanged += new System.EventHandler(this.cboCharacter_SelectedIndexChanged);
             // 
             // label2
@@ -138,6 +139,7 @@
             this.label2.Size = new System.Drawing.Size(54, 18);
             this.label2.TabIndex = 2;
             this.label2.Text = "Character";
+            this.toolTip1.SetToolTip(this.label2, "Currently selected character");
             // 
             // label1
             // 
@@ -146,6 +148,7 @@
             this.label1.Size = new System.Drawing.Size(48, 23);
             this.label1.TabIndex = 1;
             this.label1.Text = "Account";
+            this.toolTip1.SetToolTip(this.label1, "Currently selected account");
             // 
             // cboAccount
             // 
@@ -154,6 +157,7 @@
             this.cboAccount.Name = "cboAccount";
             this.cboAccount.Size = new System.Drawing.Size(134, 21);
             this.cboAccount.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.cboAccount, "Currently selected account");
             this.cboAccount.SelectedIndexChanged += new System.EventHandler(this.cboAccount_SelectedIndexChanged);
             // 
             // cboNotifyStyle
@@ -163,6 +167,7 @@
             this.cboNotifyStyle.Name = "cboNotifyStyle";
             this.cboNotifyStyle.Size = new System.Drawing.Size(134, 21);
             this.cboNotifyStyle.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.cboNotifyStyle, "Style of notification; use the test button below");
             this.cboNotifyStyle.SelectedIndexChanged += new System.EventHandler(this.cboNotifyStyle_SelectedIndexChanged);
             // 
             // groupBox2
@@ -185,6 +190,8 @@
             this.cboTimeout.Name = "cboTimeout";
             this.cboTimeout.Size = new System.Drawing.Size(134, 21);
             this.cboTimeout.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.cboTimeout, "Time after which notifications fade if not interacted with (clicking a notificati" +
+        "on will always dismiss it instantaneously)");
             this.cboTimeout.SelectedIndexChanged += new System.EventHandler(this.cboTimeout_SelectedIndexChanged);
             // 
             // label4
@@ -194,6 +201,8 @@
             this.label4.Size = new System.Drawing.Size(108, 18);
             this.label4.TabIndex = 6;
             this.label4.Text = "Notification Timeout";
+            this.toolTip1.SetToolTip(this.label4, "Time after which notifications fade if not interacted with (clicking a notificati" +
+        "on will always dismiss it instantaneously)");
             // 
             // label3
             // 
@@ -202,6 +211,7 @@
             this.label3.Size = new System.Drawing.Size(100, 23);
             this.label3.TabIndex = 4;
             this.label3.Text = "Notification Style";
+            this.toolTip1.SetToolTip(this.label3, "Style of notification; use the test button below");
             // 
             // button2
             // 
@@ -210,6 +220,7 @@
             this.button2.Size = new System.Drawing.Size(100, 23);
             this.button2.TabIndex = 10001;
             this.button2.Text = "Test Notification";
+            this.toolTip1.SetToolTip(this.button2, "Sends a test notification to verify appearance settings");
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -221,6 +232,8 @@
             this.linkLabel1.TabIndex = 5;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "ResearchDump AddOn";
+            this.toolTip1.SetToolTip(this.linkLabel1, "ResearchDump provides ESO Research Notifier with the required data. Without it, E" +
+        "SO Research Notifier won\'t do anything.");
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // panelResearch

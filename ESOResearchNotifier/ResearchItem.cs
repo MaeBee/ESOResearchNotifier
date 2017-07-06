@@ -104,6 +104,8 @@ namespace ESOResearchNotifier
             Text += TimeLeftString;
             lblName.Text = Text;
             lblDone.Text = FinishTime.ToString();
+            toolTip1.SetToolTip(lblName, Text);
+            toolTip1.SetToolTip(lblDone, FinishTime.ToString());
         }
 
         public ResearchItem()
@@ -127,6 +129,7 @@ namespace ESOResearchNotifier
             }
             //MessageBox.Show(((int)((TimeDone.TotalSeconds / Duration.TotalSeconds) * 100)).ToString());
             prgTime.Value = (int)((TimeDone.TotalSeconds / Duration.TotalSeconds) * 100);
+            toolTip1.SetToolTip(prgTime, TimeDone.ToString(@"dd\.hh\:mm\:ss") + " of " + Duration.ToString(@"dd\.hh\:mm\:ss") + " done.");
             SetLabelText();
             Update();
         }

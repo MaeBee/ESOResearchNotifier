@@ -33,6 +33,7 @@
             this.prgTime = new System.Windows.Forms.ProgressBar();
             this.timerTick = new System.Windows.Forms.Timer(this.components);
             this.lblDone = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // lblName
@@ -82,5 +83,6 @@
         private System.Windows.Forms.ProgressBar prgTime;
         private System.Windows.Forms.Timer timerTick;
         private System.Windows.Forms.Label lblDone;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
