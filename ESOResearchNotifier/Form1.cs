@@ -99,6 +99,7 @@ namespace ESOResearchNotifier
             ResearchItem Item = (ResearchItem)sender;
             ShowNotification(Item.ItemName + " - " + Item.TraitName + " has finished for " + ((ComboboxItem)cboCharacter.SelectedItem).Text + "!");
             panelResearch.Controls.Remove(Item);
+            Item.Dispose();
         }
 
         private void ReadDump()
@@ -207,6 +208,10 @@ namespace ESOResearchNotifier
 
         private void cboAccount_SelectedIndexChanged(object sender, EventArgs e)
         {
+            foreach (Control tempControl in panelResearch.Controls)
+            {
+                tempControl.Dispose();
+            }
             panelResearch.Controls.Clear();
             cboCharacter.Items.Clear();
             ComboboxItem selectedAccount = (ComboboxItem)cboAccount.SelectedItem;
@@ -244,6 +249,10 @@ namespace ESOResearchNotifier
 
         private void cboCharacter_SelectedIndexChanged(object sender, EventArgs e)
         {
+            foreach (Control tempControl in panelResearch.Controls)
+            {
+                tempControl.Dispose();
+            }
             panelResearch.Controls.Clear();
             ComboboxItem selectedCharacter = (ComboboxItem)cboCharacter.SelectedItem;
             Config["selectedchar"] = selectedCharacter.Text;
@@ -330,6 +339,22 @@ namespace ESOResearchNotifier
             ComboboxItem notifyTimeout = (ComboboxItem)cboTimeout.SelectedItem;
             Config["notifytimeout"] = notifyTimeout.Text;
             XML.WriteData(ConfigPath, Config);
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            // Short, 10-second debug research item
+            ResearchItem tItem = new ResearchItem();
+            tItem.CraftingDiscipline = ResearchItem.CraftingType.Stable;
+            DateTime FinishTime = DateTime.Now.AddSeconds(10);
+            tItem.FinishTime = FinishTime;
+            tItem.Duration = new TimeSpan(0, 0, 10);
+            if (tItem.TimeLeft.Ticks > 0)
+            {
+                tItem.ResearchDone += new EventHandler(ResearchDone);
+                tItem.Setup();
+                panelResearch.Controls.Add(tItem);
+            }
         }
     }
 

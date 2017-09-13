@@ -124,6 +124,7 @@
             // 
             // cboCharacter
             // 
+            this.cboCharacter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboCharacter.FormattingEnabled = true;
             this.cboCharacter.Location = new System.Drawing.Point(120, 46);
             this.cboCharacter.Name = "cboCharacter";
@@ -152,6 +153,7 @@
             // 
             // cboAccount
             // 
+            this.cboAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboAccount.FormattingEnabled = true;
             this.cboAccount.Location = new System.Drawing.Point(120, 19);
             this.cboAccount.Name = "cboAccount";
@@ -162,6 +164,7 @@
             // 
             // cboNotifyStyle
             // 
+            this.cboNotifyStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboNotifyStyle.FormattingEnabled = true;
             this.cboNotifyStyle.Location = new System.Drawing.Point(119, 19);
             this.cboNotifyStyle.Name = "cboNotifyStyle";
@@ -185,6 +188,7 @@
             // 
             // cboTimeout
             // 
+            this.cboTimeout.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboTimeout.FormattingEnabled = true;
             this.cboTimeout.Location = new System.Drawing.Point(119, 46);
             this.cboTimeout.Name = "cboTimeout";
