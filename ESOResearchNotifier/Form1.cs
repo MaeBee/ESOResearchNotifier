@@ -146,6 +146,7 @@ namespace ESOResearchNotifier
         {
             System.Threading.Thread.Sleep(500);
             ReadDump();
+            EvaluateTreeView();
         }
 
         private void menuItemMain_Click(object sender, EventArgs e)
