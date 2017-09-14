@@ -40,13 +40,13 @@
             // 
             this.lblName.Location = new System.Drawing.Point(3, 6);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(174, 23);
+            this.lblName.Size = new System.Drawing.Size(268, 23);
             this.lblName.TabIndex = 0;
             this.lblName.Text = "Item - Trait - TimeLeft";
             // 
             // prgTime
             // 
-            this.prgTime.Location = new System.Drawing.Point(314, 3);
+            this.prgTime.Location = new System.Drawing.Point(408, 3);
             this.prgTime.Name = "prgTime";
             this.prgTime.Size = new System.Drawing.Size(189, 23);
             this.prgTime.TabIndex = 1;
@@ -58,7 +58,7 @@
             // 
             // lblDone
             // 
-            this.lblDone.Location = new System.Drawing.Point(183, 6);
+            this.lblDone.Location = new System.Drawing.Point(277, 6);
             this.lblDone.Name = "lblDone";
             this.lblDone.Size = new System.Drawing.Size(125, 20);
             this.lblDone.TabIndex = 2;
@@ -72,7 +72,7 @@
             this.Controls.Add(this.prgTime);
             this.Controls.Add(this.lblName);
             this.Name = "ResearchItem";
-            this.Size = new System.Drawing.Size(525, 29);
+            this.Size = new System.Drawing.Size(600, 29);
             this.ResumeLayout(false);
 
         }

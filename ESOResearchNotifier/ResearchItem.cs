@@ -23,6 +23,7 @@ namespace ESOResearchNotifier
         public string[] WoodworkingNames = { "Bow", "Inferno Staff", "Ice Staff", "Lightning Staff", "Restoration Staff", "Shield" };
         public string[,] Traits  = {{ "Powered", "Charged", "Precise", "Infused", "Defending", "Training", "Sharpened", "Decisive", "Nirnhoned" }, { "Sturdy", "Impenetrable", "Reinforced", "Well-Fitted", "Training", "Infused", "Prosperous", "Divines", "Nirnhoned" }};
 
+        public string CharacterName { get; set; } = "";
         public CraftingType CraftingDiscipline { get; set; }
         public int ItemIndex { get; set; } = -1;
         public string ItemName
@@ -94,13 +95,9 @@ namespace ESOResearchNotifier
         private void SetLabelText()
         {
             string Text = null;
-            Text += ItemName;
-            if (Text != null)
-            {
-                Text += " - ";
-            }
-            Text += TraitName;
-            Text += " - ";
+            Text += CharacterName + " - ";
+            Text += ItemName + " - ";
+            Text += TraitName + " - ";
             Text += TimeLeftString;
             lblName.Text = Text;
             lblDone.Text = FinishTime.ToString();

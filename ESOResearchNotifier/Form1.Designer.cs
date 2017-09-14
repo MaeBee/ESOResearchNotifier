@@ -37,10 +37,7 @@
             this.menuItemMute = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cboCharacter = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cboAccount = new System.Windows.Forms.ComboBox();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.cboNotifyStyle = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cboTimeout = new System.Windows.Forms.ComboBox();
@@ -51,10 +48,12 @@
             this.panelResearch = new System.Windows.Forms.FlowLayoutPanel();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.notifyMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // fileSystemWatcher1
@@ -111,56 +110,27 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.cboCharacter);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.cboAccount);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.treeView1);
+            this.groupBox1.Location = new System.Drawing.Point(685, 120);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(260, 73);
-            this.groupBox1.TabIndex = 2;
+            this.groupBox1.Size = new System.Drawing.Size(260, 295);
+            this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Character";
+            this.groupBox1.Text = "Characters";
             // 
-            // cboCharacter
+            // treeView1
             // 
-            this.cboCharacter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboCharacter.FormattingEnabled = true;
-            this.cboCharacter.Location = new System.Drawing.Point(120, 46);
-            this.cboCharacter.Name = "cboCharacter";
-            this.cboCharacter.Size = new System.Drawing.Size(134, 21);
-            this.cboCharacter.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.cboCharacter, "Currently selected character");
-            this.cboCharacter.SelectedIndexChanged += new System.EventHandler(this.cboCharacter_SelectedIndexChanged);
-            // 
-            // label2
-            // 
-            this.label2.Location = new System.Drawing.Point(6, 49);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(54, 18);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Character";
-            this.toolTip1.SetToolTip(this.label2, "Currently selected character");
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(6, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 23);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Account";
-            this.toolTip1.SetToolTip(this.label1, "Currently selected account");
-            // 
-            // cboAccount
-            // 
-            this.cboAccount.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboAccount.FormattingEnabled = true;
-            this.cboAccount.Location = new System.Drawing.Point(120, 19);
-            this.cboAccount.Name = "cboAccount";
-            this.cboAccount.Size = new System.Drawing.Size(134, 21);
-            this.cboAccount.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.cboAccount, "Currently selected account");
-            this.cboAccount.SelectedIndexChanged += new System.EventHandler(this.cboAccount_SelectedIndexChanged);
+            this.treeView1.CheckBoxes = true;
+            this.treeView1.Location = new System.Drawing.Point(9, 19);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(245, 270);
+            this.treeView1.TabIndex = 21;
+            this.toolTip1.SetToolTip(this.treeView1, "Select the characters you want to track here. If an account or character does not" +
+        " show up here, make sure to log in with that character whilst running the Resear" +
+        "chDump addon at least once.");
+            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
             // 
             // cboNotifyStyle
             // 
@@ -169,20 +139,22 @@
             this.cboNotifyStyle.Location = new System.Drawing.Point(119, 19);
             this.cboNotifyStyle.Name = "cboNotifyStyle";
             this.cboNotifyStyle.Size = new System.Drawing.Size(134, 21);
-            this.cboNotifyStyle.TabIndex = 2;
+            this.cboNotifyStyle.TabIndex = 12;
             this.toolTip1.SetToolTip(this.cboNotifyStyle, "Style of notification; use the test button below");
             this.cboNotifyStyle.SelectedIndexChanged += new System.EventHandler(this.cboNotifyStyle_SelectedIndexChanged);
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.cboTimeout);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.cboNotifyStyle);
-            this.groupBox2.Location = new System.Drawing.Point(278, 12);
+            this.groupBox2.Controls.Add(this.button2);
+            this.groupBox2.Location = new System.Drawing.Point(685, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(259, 73);
-            this.groupBox2.TabIndex = 10000;
+            this.groupBox2.Size = new System.Drawing.Size(259, 102);
+            this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Notification Appearance";
             // 
@@ -193,7 +165,7 @@
             this.cboTimeout.Location = new System.Drawing.Point(119, 46);
             this.cboTimeout.Name = "cboTimeout";
             this.cboTimeout.Size = new System.Drawing.Size(134, 21);
-            this.cboTimeout.TabIndex = 3;
+            this.cboTimeout.TabIndex = 14;
             this.toolTip1.SetToolTip(this.cboTimeout, "Time after which notifications fade if not interacted with (clicking a notificati" +
         "on will always dismiss it instantaneously)");
             this.cboTimeout.SelectedIndexChanged += new System.EventHandler(this.cboTimeout_SelectedIndexChanged);
@@ -203,7 +175,7 @@
             this.label4.Location = new System.Drawing.Point(6, 49);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(108, 18);
-            this.label4.TabIndex = 6;
+            this.label4.TabIndex = 13;
             this.label4.Text = "Notification Timeout";
             this.toolTip1.SetToolTip(this.label4, "Time after which notifications fade if not interacted with (clicking a notificati" +
         "on will always dismiss it instantaneously)");
@@ -213,16 +185,16 @@
             this.label3.Location = new System.Drawing.Point(5, 22);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(100, 23);
-            this.label3.TabIndex = 4;
+            this.label3.TabIndex = 11;
             this.label3.Text = "Notification Style";
             this.toolTip1.SetToolTip(this.label3, "Style of notification; use the test button below");
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(431, 453);
+            this.button2.Location = new System.Drawing.Point(153, 73);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 23);
-            this.button2.TabIndex = 10001;
+            this.button2.TabIndex = 15;
             this.button2.Text = "Test Notification";
             this.toolTip1.SetToolTip(this.button2, "Sends a test notification to verify appearance settings");
             this.button2.UseVisualStyleBackColor = true;
@@ -230,10 +202,11 @@
             // 
             // linkLabel1
             // 
-            this.linkLabel1.Location = new System.Drawing.Point(18, 458);
+            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkLabel1.Location = new System.Drawing.Point(685, 424);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(124, 23);
-            this.linkLabel1.TabIndex = 5;
+            this.linkLabel1.TabIndex = 30;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "ResearchDump AddOn";
             this.toolTip1.SetToolTip(this.linkLabel1, "ResearchDump provides ESO Research Notifier with the required data. Without it, E" +
@@ -242,31 +215,44 @@
             // 
             // panelResearch
             // 
-            this.panelResearch.Location = new System.Drawing.Point(12, 91);
+            this.panelResearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelResearch.Location = new System.Drawing.Point(6, 19);
             this.panelResearch.Name = "panelResearch";
-            this.panelResearch.Size = new System.Drawing.Size(525, 356);
-            this.panelResearch.TabIndex = 10002;
+            this.panelResearch.Size = new System.Drawing.Size(655, 439);
+            this.panelResearch.TabIndex = 1;
             // 
             // linkLabel2
             // 
-            this.linkLabel2.Location = new System.Drawing.Point(148, 458);
+            this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkLabel2.Location = new System.Drawing.Point(685, 456);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(196, 23);
-            this.linkLabel2.TabIndex = 10003;
+            this.linkLabel2.TabIndex = 31;
             this.linkLabel2.TabStop = true;
             this.linkLabel2.Text = "Special thanks to Tamriel Trade Centre";
             this.toolTip1.SetToolTip(this.linkLabel2, "Lua.dll used for deserialisation kindly provided by TTC");
             this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.panelResearch);
+            this.groupBox3.Location = new System.Drawing.Point(12, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(667, 464);
+            this.groupBox3.TabIndex = 0;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Research";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(549, 488);
+            this.ClientSize = new System.Drawing.Size(956, 488);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.linkLabel2);
-            this.Controls.Add(this.panelResearch);
             this.Controls.Add(this.linkLabel1);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -275,11 +261,13 @@
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "ESO Research Notifier";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.notifyMenuStrip1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -296,10 +284,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cboNotifyStyle;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ComboBox cboCharacter;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cboAccount;
         private System.Windows.Forms.ComboBox cboTimeout;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button2;
@@ -307,6 +291,8 @@
         private System.Windows.Forms.FlowLayoutPanel panelResearch;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
 
