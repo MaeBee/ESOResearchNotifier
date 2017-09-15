@@ -53,8 +53,8 @@
             this.lblDone = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.btnSortName = new System.Windows.Forms.Button();
-            this.treeView1 = new ESOResearchNotifier.FixedTreeView();
             this.btnSortDefault = new System.Windows.Forms.Button();
+            this.treeView1 = new ESOResearchNotifier.FixedTreeView();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.notifyMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -215,7 +215,7 @@
             this.panelResearch.Location = new System.Drawing.Point(6, 45);
             this.panelResearch.Name = "panelResearch";
             this.panelResearch.Size = new System.Drawing.Size(655, 413);
-            this.panelResearch.TabIndex = 1;
+            this.panelResearch.TabIndex = 7;
             // 
             // linkLabel2
             // 
@@ -250,7 +250,7 @@
             this.btnSortTime.Location = new System.Drawing.Point(363, 17);
             this.btnSortTime.Name = "btnSortTime";
             this.btnSortTime.Size = new System.Drawing.Size(39, 23);
-            this.btnSortTime.TabIndex = 7;
+            this.btnSortTime.TabIndex = 4;
             this.btnSortTime.Text = "Sort";
             this.btnSortTime.UseVisualStyleBackColor = true;
             this.btnSortTime.Click += new System.EventHandler(this.btnSortTime_Click);
@@ -261,7 +261,7 @@
             this.label1.Location = new System.Drawing.Point(417, 22);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(158, 20);
-            this.label1.TabIndex = 6;
+            this.label1.TabIndex = 5;
             this.label1.Text = "Progress";
             // 
             // lblDone
@@ -270,7 +270,7 @@
             this.lblDone.Location = new System.Drawing.Point(286, 22);
             this.lblDone.Name = "lblDone";
             this.lblDone.Size = new System.Drawing.Size(71, 20);
-            this.lblDone.TabIndex = 5;
+            this.lblDone.TabIndex = 3;
             this.lblDone.Text = "Finish Time";
             // 
             // lblName
@@ -279,7 +279,7 @@
             this.lblName.Location = new System.Drawing.Point(12, 22);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(120, 23);
-            this.lblName.TabIndex = 3;
+            this.lblName.TabIndex = 1;
             this.lblName.Text = "Character and Item";
             // 
             // btnSortName
@@ -287,10 +287,20 @@
             this.btnSortName.Location = new System.Drawing.Point(138, 17);
             this.btnSortName.Name = "btnSortName";
             this.btnSortName.Size = new System.Drawing.Size(39, 23);
-            this.btnSortName.TabIndex = 8;
+            this.btnSortName.TabIndex = 2;
             this.btnSortName.Text = "Sort";
             this.btnSortName.UseVisualStyleBackColor = true;
             this.btnSortName.Click += new System.EventHandler(this.btnSortName_Click);
+            // 
+            // btnSortDefault
+            // 
+            this.btnSortDefault.Location = new System.Drawing.Point(581, 17);
+            this.btnSortDefault.Name = "btnSortDefault";
+            this.btnSortDefault.Size = new System.Drawing.Size(80, 23);
+            this.btnSortDefault.TabIndex = 6;
+            this.btnSortDefault.Text = "Reset Sorting";
+            this.btnSortDefault.UseVisualStyleBackColor = true;
+            this.btnSortDefault.Click += new System.EventHandler(this.btnSortDefault_Click);
             // 
             // treeView1
             // 
@@ -303,16 +313,6 @@
         " show up here, make sure to log in with that character whilst running the Resear" +
         "chDump addon at least once.");
             this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
-            // 
-            // btnSortDefault
-            // 
-            this.btnSortDefault.Location = new System.Drawing.Point(581, 17);
-            this.btnSortDefault.Name = "btnSortDefault";
-            this.btnSortDefault.Size = new System.Drawing.Size(80, 23);
-            this.btnSortDefault.TabIndex = 9;
-            this.btnSortDefault.Text = "Reset Sorting";
-            this.btnSortDefault.UseVisualStyleBackColor = true;
-            this.btnSortDefault.Click += new System.EventHandler(this.btnSortDefault_Click);
             // 
             // Form1
             // 

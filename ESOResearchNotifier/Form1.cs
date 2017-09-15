@@ -141,6 +141,7 @@ namespace ESOResearchNotifier
             {
                 MessageBox.Show("No valid data could be found. Please run the ResearchDump addon and /reloadui.\r\nIf the problem persists, delete " + SavedVars + "\\ResearchDump.lua and run the addon.\r\nIf the problem still persists, please file an issue on GitHub, attaching your ResearchDump.lua.");
             }
+            ExpandTree();
         }
 
         private void fileSystemWatcher1_Changed(object sender, System.IO.FileSystemEventArgs e)
@@ -167,12 +168,7 @@ namespace ESOResearchNotifier
         {
             this.Close();
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
-        }
-
+        
         private void Form1_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -185,11 +181,7 @@ namespace ESOResearchNotifier
                 this.ShowInTaskbar = true;
             }
 
-            foreach (TreeMetaNode Node in treeView1.Nodes)
-            {
-                HideCheckBox(treeView1, Node);
-            }
-            treeView1.ExpandAll();
+            ExpandTree();
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -227,7 +219,7 @@ namespace ESOResearchNotifier
             XML.WriteData(ConfigPath, Config, SelectedCharacters);
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             // Short, 10-second debug research item
             ResearchItem tItem = new ResearchItem();
@@ -336,15 +328,20 @@ namespace ESOResearchNotifier
 
             SelectedCharacters = newSelectedCharacters;
             XML.WriteData(ConfigPath, Config, SelectedCharacters);
+            ExpandTree();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void ExpandTree()
         {
             foreach (TreeMetaNode Node in treeView1.Nodes)
             {
                 HideCheckBox(treeView1, Node);
             }
             treeView1.ExpandAll();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
             EvaluateTreeView();
         }
 
@@ -395,7 +392,7 @@ namespace ESOResearchNotifier
         /// <summary>
         /// Hides the checkbox for the specified node on a TreeView control.
         /// </summary>
-        private void HideCheckBox(TreeView tvw, TreeMetaNode node)
+        private void HideCheckBox(FixedTreeView tvw, TreeMetaNode node)
         {
             TVITEM tvi = new TVITEM();
             tvi.hItem = node.Handle;
