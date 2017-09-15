@@ -414,4 +414,31 @@ namespace ESOResearchNotifier
     {
         public object MetaValue { get; set; }
     }
+
+    public partial class FixedTreeView : TreeView
+    {
+        private const int WM_LBUTTONDBLCLK = 0x0203;
+        private const int WM_RBUTTONDOWN = 0x0204;
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == WM_LBUTTONDBLCLK)
+            {
+                // disable double-click on checkbox to fix Microsoft Vista bug
+                TreeViewHitTestInfo tvhti = HitTest(new System.Drawing.Point((int)m.LParam));
+                if (tvhti != null && tvhti.Location == TreeViewHitTestLocations.StateImage)
+                {
+                    m.Result = IntPtr.Zero;
+                    return;
+                }
+            }
+            else if (m.Msg == WM_RBUTTONDOWN)
+            {
+                // set focus to node on right-click - another Microsoft bug?
+                TreeViewHitTestInfo tvhti = HitTest(new System.Drawing.Point((int)m.LParam));
+                if (tvhti != null)
+                    this.SelectedNode = tvhti.Node;
+            }
+            base.WndProc(ref m);
+        }
+    }
 }

@@ -37,7 +37,7 @@
             this.menuItemMute = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.treeView1 = new FixedTreeView();
             this.cboNotifyStyle = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cboTimeout = new System.Windows.Forms.ComboBox();
@@ -291,7 +291,7 @@
         private System.Windows.Forms.FlowLayoutPanel panelResearch;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.TreeView treeView1;
+        private FixedTreeView treeView1;
         private System.Windows.Forms.GroupBox groupBox3;
     }
 }
