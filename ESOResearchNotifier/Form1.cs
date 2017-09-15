@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using ToastNotifications;
 using Lua;
 using System.Runtime.InteropServices;
+using static System.Windows.Forms.Control;
 
 namespace ESOResearchNotifier
 {
@@ -246,6 +247,7 @@ namespace ESOResearchNotifier
         {
             EvaluateTreeView();
         }
+
         private void EvaluateTreeView()
         {
 
@@ -346,6 +348,22 @@ namespace ESOResearchNotifier
             EvaluateTreeView();
         }
 
+        private void btnSortTime_Click(object sender, EventArgs e)
+        {
+            Utility.SortByTime(panelResearch.Controls);
+            Refresh();
+        }
+
+        private void btnSortName_Click(object sender, EventArgs e)
+        {
+            Utility.SortByName(panelResearch.Controls);
+        }
+
+        private void btnSortDefault_Click(object sender, EventArgs e)
+        {
+            EvaluateTreeView();
+        }
+
         #region Here be TreeView interop dragons
         // Hack to allow hiding CheckBoxes in the Character selection TreeView
 
@@ -439,6 +457,112 @@ namespace ESOResearchNotifier
                     this.SelectedNode = tvhti.Node;
             }
             base.WndProc(ref m);
+        }
+    }
+
+    public partial class Utility
+    {
+        public static void SortByTime(ControlCollection data, int l = 0, int r = -1)
+        {
+            if (r <= 0)
+            {
+                r = data.Count - 1;
+            }
+
+            int i, j;
+            Control x;
+
+            i = l;
+            j = r;
+
+            x = data[(l + r) / 2]; // find pivot item
+
+            if (x is ResearchItem)
+            {
+
+                while (true)
+                {
+                    while (((ResearchItem)data[i]).FinishTime < ((ResearchItem)x).FinishTime)
+                        i++;
+                    while (((ResearchItem)x).FinishTime < ((ResearchItem)data[j]).FinishTime)
+                        j--;
+                    if (i <= j)
+                    {
+                        data = exchange(data, i, j);
+                        i++;
+                        j--;
+                    }
+                    if (i > j)
+                        break;
+                }
+                if (l < j)
+                {
+                    SortByTime(data, l, j);
+                }
+                if (i < r)
+                {
+                    SortByTime(data, i, r);
+                }
+            }
+        }
+
+        public static void SortByName(ControlCollection data, int l = 0, int r = -1)
+        {
+            if (r <= 0)
+            {
+                r = data.Count - 1;
+            }
+
+            int i, j;
+            Control x;
+
+            i = l;
+            j = r;
+
+            x = data[(l + r) / 2]; // find pivot item
+
+            //MessageBox.Show(((ResearchItem)x).LabelText.CompareTo(((ResearchItem)data[j]).LabelText).ToString());
+
+            if (x is ResearchItem)
+            {
+
+                while (true)
+                {
+                    while (((ResearchItem)data[i]).LabelText.CompareTo(((ResearchItem)x).LabelText) < 0)
+                        i++;
+                    while (((ResearchItem)x).LabelText.CompareTo(((ResearchItem)data[j]).LabelText) < 0)
+                        j--;
+                    if (i <= j)
+                    {
+                        data = exchange(data, i, j);
+                        i++;
+                        j--;
+                    }
+                    if (i > j)
+                        break;
+                }
+                if (l < j)
+                {
+                    SortByName(data, l, j);
+                }
+                if (i < r)
+                {
+                    SortByName(data, i, r);
+                }
+            }
+        }
+
+        private static ControlCollection exchange(ControlCollection data, int m, int n)
+        {
+            Control temporary;
+
+            temporary = data[m];
+            data.SetChildIndex(data[m], n);
+            data.RemoveAt(n);
+            data.Add(temporary);
+            data.SetChildIndex(data[data.Count - 1], n);
+
+            return data;
         }
     }
 }

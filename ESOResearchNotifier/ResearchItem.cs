@@ -92,16 +92,24 @@ namespace ESOResearchNotifier
             }
         }
 
+        public string LabelText
+        {
+            get
+            {
+                string Text = null;
+                Text += CharacterName + " - ";
+                Text += ItemName + " - ";
+                Text += TraitName + " - ";
+                Text += TimeLeftString;
+                return Text;
+            }
+        }
+
         private void SetLabelText()
         {
-            string Text = null;
-            Text += CharacterName + " - ";
-            Text += ItemName + " - ";
-            Text += TraitName + " - ";
-            Text += TimeLeftString;
-            lblName.Text = Text;
+            lblName.Text = LabelText;
             lblDone.Text = FinishTime.ToString();
-            toolTip1.SetToolTip(lblName, Text);
+            toolTip1.SetToolTip(lblName, LabelText);
             toolTip1.SetToolTip(lblDone, FinishTime.ToString());
         }
 

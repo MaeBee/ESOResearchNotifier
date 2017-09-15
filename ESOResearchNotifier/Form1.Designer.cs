@@ -37,7 +37,6 @@
             this.menuItemMute = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.treeView1 = new FixedTreeView();
             this.cboNotifyStyle = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cboTimeout = new System.Windows.Forms.ComboBox();
@@ -49,6 +48,13 @@
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnSortTime = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblDone = new System.Windows.Forms.Label();
+            this.lblName = new System.Windows.Forms.Label();
+            this.btnSortName = new System.Windows.Forms.Button();
+            this.treeView1 = new ESOResearchNotifier.FixedTreeView();
+            this.btnSortDefault = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.notifyMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -119,18 +125,6 @@
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
-            // 
-            // treeView1
-            // 
-            this.treeView1.CheckBoxes = true;
-            this.treeView1.Location = new System.Drawing.Point(9, 19);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(245, 270);
-            this.treeView1.TabIndex = 21;
-            this.toolTip1.SetToolTip(this.treeView1, "Select the characters you want to track here. If an account or character does not" +
-        " show up here, make sure to log in with that character whilst running the Resear" +
-        "chDump addon at least once.");
-            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
             // 
             // cboNotifyStyle
             // 
@@ -218,9 +212,9 @@
             this.panelResearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelResearch.Location = new System.Drawing.Point(6, 19);
+            this.panelResearch.Location = new System.Drawing.Point(6, 45);
             this.panelResearch.Name = "panelResearch";
-            this.panelResearch.Size = new System.Drawing.Size(655, 439);
+            this.panelResearch.Size = new System.Drawing.Size(655, 413);
             this.panelResearch.TabIndex = 1;
             // 
             // linkLabel2
@@ -237,6 +231,12 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btnSortDefault);
+            this.groupBox3.Controls.Add(this.btnSortName);
+            this.groupBox3.Controls.Add(this.btnSortTime);
+            this.groupBox3.Controls.Add(this.label1);
+            this.groupBox3.Controls.Add(this.lblDone);
+            this.groupBox3.Controls.Add(this.lblName);
             this.groupBox3.Controls.Add(this.panelResearch);
             this.groupBox3.Location = new System.Drawing.Point(12, 12);
             this.groupBox3.Name = "groupBox3";
@@ -244,6 +244,75 @@
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Research";
+            // 
+            // btnSortTime
+            // 
+            this.btnSortTime.Location = new System.Drawing.Point(363, 17);
+            this.btnSortTime.Name = "btnSortTime";
+            this.btnSortTime.Size = new System.Drawing.Size(39, 23);
+            this.btnSortTime.TabIndex = 7;
+            this.btnSortTime.Text = "Sort";
+            this.btnSortTime.UseVisualStyleBackColor = true;
+            this.btnSortTime.Click += new System.EventHandler(this.btnSortTime_Click);
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(417, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(158, 20);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Progress";
+            // 
+            // lblDone
+            // 
+            this.lblDone.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDone.Location = new System.Drawing.Point(286, 22);
+            this.lblDone.Name = "lblDone";
+            this.lblDone.Size = new System.Drawing.Size(71, 20);
+            this.lblDone.TabIndex = 5;
+            this.lblDone.Text = "Finish Time";
+            // 
+            // lblName
+            // 
+            this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblName.Location = new System.Drawing.Point(12, 22);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(120, 23);
+            this.lblName.TabIndex = 3;
+            this.lblName.Text = "Character and Item";
+            // 
+            // btnSortName
+            // 
+            this.btnSortName.Location = new System.Drawing.Point(138, 17);
+            this.btnSortName.Name = "btnSortName";
+            this.btnSortName.Size = new System.Drawing.Size(39, 23);
+            this.btnSortName.TabIndex = 8;
+            this.btnSortName.Text = "Sort";
+            this.btnSortName.UseVisualStyleBackColor = true;
+            this.btnSortName.Click += new System.EventHandler(this.btnSortName_Click);
+            // 
+            // treeView1
+            // 
+            this.treeView1.CheckBoxes = true;
+            this.treeView1.Location = new System.Drawing.Point(9, 19);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(245, 270);
+            this.treeView1.TabIndex = 21;
+            this.toolTip1.SetToolTip(this.treeView1, "Select the characters you want to track here. If an account or character does not" +
+        " show up here, make sure to log in with that character whilst running the Resear" +
+        "chDump addon at least once.");
+            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
+            // 
+            // btnSortDefault
+            // 
+            this.btnSortDefault.Location = new System.Drawing.Point(581, 17);
+            this.btnSortDefault.Name = "btnSortDefault";
+            this.btnSortDefault.Size = new System.Drawing.Size(80, 23);
+            this.btnSortDefault.TabIndex = 9;
+            this.btnSortDefault.Text = "Reset Sorting";
+            this.btnSortDefault.UseVisualStyleBackColor = true;
+            this.btnSortDefault.Click += new System.EventHandler(this.btnSortDefault_Click);
             // 
             // Form1
             // 
@@ -293,6 +362,12 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private FixedTreeView treeView1;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblDone;
+        private System.Windows.Forms.Label lblName;
+        private System.Windows.Forms.Button btnSortTime;
+        private System.Windows.Forms.Button btnSortName;
+        private System.Windows.Forms.Button btnSortDefault;
     }
 }
 
