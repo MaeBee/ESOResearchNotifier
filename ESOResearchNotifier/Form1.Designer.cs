@@ -37,6 +37,7 @@
             this.menuItemMute = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.treeView1 = new ESOResearchNotifier.FixedTreeView();
             this.cboNotifyStyle = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cboTimeout = new System.Windows.Forms.ComboBox();
@@ -48,13 +49,12 @@
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnSortDefault = new System.Windows.Forms.Button();
+            this.btnSortName = new System.Windows.Forms.Button();
             this.btnSortTime = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lblDone = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
-            this.btnSortName = new System.Windows.Forms.Button();
-            this.btnSortDefault = new System.Windows.Forms.Button();
-            this.treeView1 = new ESOResearchNotifier.FixedTreeView();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.notifyMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -125,6 +125,18 @@
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
+            // 
+            // treeView1
+            // 
+            this.treeView1.CheckBoxes = true;
+            this.treeView1.Location = new System.Drawing.Point(9, 19);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(245, 270);
+            this.treeView1.TabIndex = 21;
+            this.toolTip1.SetToolTip(this.treeView1, "Select the characters you want to track here. If an account or character does not" +
+        " show up here, make sure to log in with that character whilst running the Resear" +
+        "chDump addon at least once.");
+            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
             // 
             // cboNotifyStyle
             // 
@@ -212,6 +224,7 @@
             this.panelResearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelResearch.AutoScroll = true;
             this.panelResearch.Location = new System.Drawing.Point(6, 45);
             this.panelResearch.Name = "panelResearch";
             this.panelResearch.Size = new System.Drawing.Size(655, 413);
@@ -244,6 +257,26 @@
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Research";
+            // 
+            // btnSortDefault
+            // 
+            this.btnSortDefault.Location = new System.Drawing.Point(581, 17);
+            this.btnSortDefault.Name = "btnSortDefault";
+            this.btnSortDefault.Size = new System.Drawing.Size(80, 23);
+            this.btnSortDefault.TabIndex = 6;
+            this.btnSortDefault.Text = "Reset Sorting";
+            this.btnSortDefault.UseVisualStyleBackColor = true;
+            this.btnSortDefault.Click += new System.EventHandler(this.btnSortDefault_Click);
+            // 
+            // btnSortName
+            // 
+            this.btnSortName.Location = new System.Drawing.Point(138, 17);
+            this.btnSortName.Name = "btnSortName";
+            this.btnSortName.Size = new System.Drawing.Size(39, 23);
+            this.btnSortName.TabIndex = 2;
+            this.btnSortName.Text = "Sort";
+            this.btnSortName.UseVisualStyleBackColor = true;
+            this.btnSortName.Click += new System.EventHandler(this.btnSortName_Click);
             // 
             // btnSortTime
             // 
@@ -281,38 +314,6 @@
             this.lblName.Size = new System.Drawing.Size(120, 23);
             this.lblName.TabIndex = 1;
             this.lblName.Text = "Character and Item";
-            // 
-            // btnSortName
-            // 
-            this.btnSortName.Location = new System.Drawing.Point(138, 17);
-            this.btnSortName.Name = "btnSortName";
-            this.btnSortName.Size = new System.Drawing.Size(39, 23);
-            this.btnSortName.TabIndex = 2;
-            this.btnSortName.Text = "Sort";
-            this.btnSortName.UseVisualStyleBackColor = true;
-            this.btnSortName.Click += new System.EventHandler(this.btnSortName_Click);
-            // 
-            // btnSortDefault
-            // 
-            this.btnSortDefault.Location = new System.Drawing.Point(581, 17);
-            this.btnSortDefault.Name = "btnSortDefault";
-            this.btnSortDefault.Size = new System.Drawing.Size(80, 23);
-            this.btnSortDefault.TabIndex = 6;
-            this.btnSortDefault.Text = "Reset Sorting";
-            this.btnSortDefault.UseVisualStyleBackColor = true;
-            this.btnSortDefault.Click += new System.EventHandler(this.btnSortDefault_Click);
-            // 
-            // treeView1
-            // 
-            this.treeView1.CheckBoxes = true;
-            this.treeView1.Location = new System.Drawing.Point(9, 19);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(245, 270);
-            this.treeView1.TabIndex = 21;
-            this.toolTip1.SetToolTip(this.treeView1, "Select the characters you want to track here. If an account or character does not" +
-        " show up here, make sure to log in with that character whilst running the Resear" +
-        "chDump addon at least once.");
-            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
             // 
             // Form1
             // 

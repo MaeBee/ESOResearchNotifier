@@ -67,6 +67,8 @@ namespace ESOResearchNotifier
         }
         public TimeSpan Duration { get; set; }
         public DateTime FinishTime { get; set; }
+        public bool Done = false;
+
 
         public TimeSpan TimeLeft
         {
@@ -120,19 +122,16 @@ namespace ESOResearchNotifier
 
         public void Setup()
         {
-            if (!timerTick.Enabled)
+            if (TimeLeft.TotalSeconds <= 0)
+            {
+                Done = true;
+                ResearchDone?.Invoke(this, new EventArgs());
+                return;
+            }
+            if (!timerTick.Enabled && !Done)
             {
                 timerTick.Start();
             }
-            if (TimeLeft.TotalSeconds <= 0)
-            {
-                if (this.ResearchDone != null)
-                {
-                    this.ResearchDone(this, new EventArgs());
-                }
-                return;
-            }
-            //MessageBox.Show(((int)((TimeDone.TotalSeconds / Duration.TotalSeconds) * 100)).ToString());
             prgTime.Value = (int)((TimeDone.TotalSeconds / Duration.TotalSeconds) * 100);
             toolTip1.SetToolTip(prgTime, TimeDone.ToString(@"dd\.hh\:mm\:ss") + " of " + Duration.ToString(@"dd\.hh\:mm\:ss") + " done.");
             SetLabelText();
