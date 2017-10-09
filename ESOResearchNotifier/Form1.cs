@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using ToastNotifications;
 using Lua;
-using System.Runtime.InteropServices;
 using static System.Windows.Forms.Control;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace ESOResearchNotifier
 {
@@ -18,6 +21,7 @@ namespace ESOResearchNotifier
         private Dictionary<string, string> Config = new Dictionary<string, string>();
         private List<string> SelectedCharacters = new List<string>();
         private string ConfigPath = Application.StartupPath + "\\ESOResearchNotifier.xml";
+        private GitHubRelease LatestRelease = new GitHubRelease();
 
         public Form1()
         {
@@ -76,6 +80,38 @@ namespace ESOResearchNotifier
             fileSystemWatcher1.Path = SavedVars;
 
             ReadDump();
+
+            if (CheckUpdate())
+            {
+                btnUpdate.Visible = true;
+                btnUpdate.Enabled = true;
+            }
+        }
+
+        private bool CheckUpdate()
+        {
+            HttpClient client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
+
+            client.BaseAddress = new Uri("https://api.github.com");
+            client.DefaultRequestHeaders.Add("User-Agent", "ESOResearchNotifier");
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            var sResult = client.GetStringAsync("/repos/gobbo1008/ESOResearchNotifier/releases/latest").Result;
+            GitHubRelease dResult = JsonConvert.DeserializeObject<GitHubRelease>(sResult);
+            LatestRelease = dResult;
+
+            string versionString = LatestRelease.tag_name.Remove(0, 1);
+            Version RemoteVersion = new Version(versionString);
+            Version LocalVersion = GetType().Assembly.GetName().Version;
+
+            return true;
+            if (LocalVersion.CompareTo(RemoteVersion) < 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private void ShowNotification(string Content)
@@ -360,6 +396,11 @@ namespace ESOResearchNotifier
         {
             EvaluateTreeView();
         }
+        
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(LatestRelease.upload_url);
+        }
 
         #region Here be TreeView interop dragons
         // Hack to allow hiding CheckBoxes in the Character selection TreeView
@@ -423,6 +464,12 @@ namespace ESOResearchNotifier
         {
             return Text;
         }
+    }
+
+    public class GitHubRelease
+    {
+        public string tag_name { get; set; }
+        public string upload_url { get; set; }
     }
 
     public class TreeMetaNode: TreeNode
