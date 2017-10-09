@@ -37,6 +37,7 @@
             this.menuItemMute = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.treeView1 = new ESOResearchNotifier.FixedTreeView();
             this.cboNotifyStyle = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cboTimeout = new System.Windows.Forms.ComboBox();
@@ -55,7 +56,7 @@
             this.lblDone = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.btnUpdate = new System.Windows.Forms.Button();
-            this.treeView1 = new ESOResearchNotifier.FixedTreeView();
+            this.prgUpdate = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.notifyMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -126,6 +127,18 @@
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
+            // 
+            // treeView1
+            // 
+            this.treeView1.CheckBoxes = true;
+            this.treeView1.Location = new System.Drawing.Point(9, 19);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(245, 270);
+            this.treeView1.TabIndex = 21;
+            this.toolTip1.SetToolTip(this.treeView1, "Select the characters you want to track here. If an account or character does not" +
+        " show up here, make sure to log in with that character whilst running the Resear" +
+        "chDump addon at least once.");
+            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
             // 
             // cboNotifyStyle
             // 
@@ -316,23 +329,21 @@
             this.btnUpdate.Visible = false;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
-            // treeView1
+            // prgUpdate
             // 
-            this.treeView1.CheckBoxes = true;
-            this.treeView1.Location = new System.Drawing.Point(9, 19);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(245, 270);
-            this.treeView1.TabIndex = 21;
-            this.toolTip1.SetToolTip(this.treeView1, "Select the characters you want to track here. If an account or character does not" +
-        " show up here, make sure to log in with that character whilst running the Resear" +
-        "chDump addon at least once.");
-            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
+            this.prgUpdate.Enabled = false;
+            this.prgUpdate.Location = new System.Drawing.Point(838, 419);
+            this.prgUpdate.Name = "prgUpdate";
+            this.prgUpdate.Size = new System.Drawing.Size(100, 23);
+            this.prgUpdate.TabIndex = 0;
+            this.prgUpdate.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(956, 488);
+            this.Controls.Add(this.prgUpdate);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.linkLabel2);
@@ -345,6 +356,7 @@
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "ESO Research Notifier";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
@@ -384,6 +396,7 @@
         private System.Windows.Forms.Button btnSortName;
         private System.Windows.Forms.Button btnSortDefault;
         private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.ProgressBar prgUpdate;
     }
 }
 

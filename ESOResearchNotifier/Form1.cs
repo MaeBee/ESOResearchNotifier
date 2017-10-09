@@ -9,6 +9,7 @@ using Lua;
 using static System.Windows.Forms.Control;
 using System.Net;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace ESOResearchNotifier
 {
@@ -22,6 +23,8 @@ namespace ESOResearchNotifier
         private List<string> SelectedCharacters = new List<string>();
         private string ConfigPath = Application.StartupPath + "\\ESOResearchNotifier.xml";
         private GitHubRelease LatestRelease = new GitHubRelease();
+        private string LatestReleaseDownload;
+        private bool UpdateReady = false;
 
         public Form1()
         {
@@ -102,16 +105,42 @@ namespace ESOResearchNotifier
             string versionString = LatestRelease.tag_name.Remove(0, 1);
             Version RemoteVersion = new Version(versionString);
             Version LocalVersion = GetType().Assembly.GetName().Version;
-
-            return true;
+            
             if (LocalVersion.CompareTo(RemoteVersion) < 0)
             {
+                GitHubDownload dDownload = JsonConvert.DeserializeObject<GitHubDownload>(LatestRelease.assets[0].ToString());
+                LatestReleaseDownload = dDownload.browser_download_url;
                 return true;
             }
             else
             {
                 return false;
             }
+        }
+
+        private void DoUpdate()
+        {
+            WebClient client = new WebClient();
+            client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
+            client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
+            client.DownloadFileAsync(new Uri(LatestReleaseDownload), @"" + Application.StartupPath + "\\ESOResearchNotifier.zip");
+        }
+
+        private void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            btnUpdate.Text = "Update ready!";
+            btnUpdate.Visible = true;
+            btnUpdate.Enabled = true;
+            prgUpdate.Visible = false;
+            prgUpdate.Enabled = false;
+        }
+
+        private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            double bytesIn = double.Parse(e.BytesReceived.ToString());
+            double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
+            double percentage = bytesIn / totalBytes * 100;
+            prgUpdate.Value = int.Parse(Math.Truncate(percentage).ToString());
         }
 
         private void ShowNotification(string Content)
@@ -399,7 +428,26 @@ namespace ESOResearchNotifier
         
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(LatestRelease.upload_url);
+            if (!UpdateReady)
+            {
+                btnUpdate.Visible = false;
+                btnUpdate.Enabled = false;
+                prgUpdate.Visible = true;
+                prgUpdate.Enabled = true;
+                DoUpdate();
+            }
+            else
+            {
+                Close();
+            }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (UpdateReady)
+            {
+                // Start Updater here
+            }
         }
 
         #region Here be TreeView interop dragons
@@ -470,6 +518,12 @@ namespace ESOResearchNotifier
     {
         public string tag_name { get; set; }
         public string upload_url { get; set; }
+        public object[] assets { get; set; }
+    }
+
+    public class GitHubDownload
+    {
+        public string browser_download_url { get; set; }
     }
 
     public class TreeMetaNode: TreeNode
