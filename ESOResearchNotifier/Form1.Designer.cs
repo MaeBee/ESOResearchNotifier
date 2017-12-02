@@ -55,6 +55,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lblDone = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
+            this.btnUpdate = new System.Windows.Forms.Button();
+            this.prgUpdate = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.notifyMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -315,11 +317,34 @@
             this.lblName.TabIndex = 1;
             this.lblName.Text = "Character and Item";
             // 
+            // btnUpdate
+            // 
+            this.btnUpdate.Enabled = false;
+            this.btnUpdate.Location = new System.Drawing.Point(838, 419);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(100, 23);
+            this.btnUpdate.TabIndex = 32;
+            this.btnUpdate.Text = "Update Available!";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Visible = false;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            // 
+            // prgUpdate
+            // 
+            this.prgUpdate.Enabled = false;
+            this.prgUpdate.Location = new System.Drawing.Point(838, 419);
+            this.prgUpdate.Name = "prgUpdate";
+            this.prgUpdate.Size = new System.Drawing.Size(100, 23);
+            this.prgUpdate.TabIndex = 0;
+            this.prgUpdate.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(956, 488);
+            this.Controls.Add(this.prgUpdate);
+            this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.linkLabel1);
@@ -331,6 +356,7 @@
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "ESO Research Notifier";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
@@ -369,6 +395,8 @@
         private System.Windows.Forms.Button btnSortTime;
         private System.Windows.Forms.Button btnSortName;
         private System.Windows.Forms.Button btnSortDefault;
+        private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.ProgressBar prgUpdate;
     }
 }
 
