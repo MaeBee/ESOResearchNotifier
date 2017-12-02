@@ -122,7 +122,7 @@ namespace ESOResearchNotifier
 
         public void Setup()
         {
-            if (TimeLeft.TotalSeconds <= 0)
+            if (TimeLeft.TotalSeconds <= 0 && !Done)
             {
                 Done = true;
                 ResearchDone?.Invoke(this, new EventArgs());
