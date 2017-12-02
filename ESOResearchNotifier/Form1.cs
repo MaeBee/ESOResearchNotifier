@@ -133,6 +133,7 @@ namespace ESOResearchNotifier
             btnUpdate.Enabled = true;
             prgUpdate.Visible = false;
             prgUpdate.Enabled = false;
+            UpdateReady = true;
         }
 
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -446,7 +447,7 @@ namespace ESOResearchNotifier
         {
             if (UpdateReady)
             {
-                // Start Updater here
+                System.Diagnostics.Process.Start("Updater.exe");
             }
         }
 
@@ -560,107 +561,122 @@ namespace ESOResearchNotifier
 
     public partial class Utility
     {
-        public static void SortByTime(ControlCollection data, int l = 0, int r = -1)
+        public static void SortByTime(ControlCollection data)
         {
-            if (r <= 0)
+            List<Control> NewData = new List<Control>();
+            Queue<Control> DataQueue = new Queue<Control>();
+
+            foreach (Control DataControl in data)
             {
-                r = data.Count - 1;
+                if (DataControl is ResearchItem)
+                {
+                    DataQueue.Enqueue(DataControl);
+                }
             }
 
-            int i, j;
-            Control x;
+            Control tempControl = DataQueue.Dequeue();
+            NewData.Add(tempControl);
 
-            i = l;
-            j = r;
-
-            x = data[(l + r) / 2]; // find pivot item
-
-            if (x is ResearchItem)
+            while (DataQueue.Count > 0)
             {
-
-                while (true)
+                Control TempControl = DataQueue.Dequeue();
+                int Index = 0;
+                foreach (Control LowControl in NewData)
                 {
-                    while (((ResearchItem)data[i]).FinishTime < ((ResearchItem)x).FinishTime)
-                        i++;
-                    while (((ResearchItem)x).FinishTime < ((ResearchItem)data[j]).FinishTime)
-                        j--;
-                    if (i <= j)
+                    if (((ResearchItem)TempControl).FinishTime > ((ResearchItem)LowControl).FinishTime)
                     {
-                        data = exchange(data, i, j);
-                        i++;
-                        j--;
+                        if (NewData.Count > Index + 1)
+                        {
+                            if (((ResearchItem)TempControl).FinishTime < ((ResearchItem)NewData[Index + 1]).FinishTime)
+                            {
+                                NewData.Insert(Index + 1, TempControl);
+                                break;
+                            }
+                            else if (((ResearchItem)TempControl).FinishTime == ((ResearchItem)NewData[Index + 1]).FinishTime)
+                            {
+                                NewData.Insert(Index + 1, TempControl);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            NewData.Add(TempControl);
+                            break;
+                        }
                     }
-                    if (i > j)
+                    else
+                    {
+                        NewData.Insert(Index, TempControl);
                         break;
+                    }
+                    Index++;
                 }
-                if (l < j)
-                {
-                    SortByTime(data, l, j);
-                }
-                if (i < r)
-                {
-                    SortByTime(data, i, r);
-                }
+            }
+
+            data.Clear();
+            foreach (Control SortedData in NewData)
+            {
+                data.Add(SortedData);
             }
         }
 
-        public static void SortByName(ControlCollection data, int l = 0, int r = -1)
+        public static void SortByName(ControlCollection data)
         {
-            if (r <= 0)
+            List<Control> NewData = new List<Control>();
+            Queue<Control> DataQueue = new Queue<Control>();
+
+            foreach (Control DataControl in data)
             {
-                r = data.Count - 1;
+                if (DataControl is ResearchItem)
+                {
+                    DataQueue.Enqueue(DataControl);
+                }
             }
 
-            int i, j;
-            Control x;
+            Control tempControl = DataQueue.Dequeue();
+            NewData.Add(tempControl);
 
-            i = l;
-            j = r;
-
-            x = data[(l + r) / 2]; // find pivot item
-
-            //MessageBox.Show(((ResearchItem)x).LabelText.CompareTo(((ResearchItem)data[j]).LabelText).ToString());
-
-            if (x is ResearchItem)
+            while (DataQueue.Count > 0)
             {
-
-                while (true)
+                Control TempControl = DataQueue.Dequeue();
+                int Index = 0;
+                foreach (Control LowControl in NewData)
                 {
-                    while (((ResearchItem)data[i]).LabelText.CompareTo(((ResearchItem)x).LabelText) < 0)
-                        i++;
-                    while (((ResearchItem)x).LabelText.CompareTo(((ResearchItem)data[j]).LabelText) < 0)
-                        j--;
-                    if (i <= j)
+                    if (((ResearchItem)TempControl).LabelText.CompareTo(((ResearchItem)LowControl).LabelText) > 0)
                     {
-                        data = exchange(data, i, j);
-                        i++;
-                        j--;
+                        if (NewData.Count > Index + 1)
+                        {
+                            if (((ResearchItem)TempControl).LabelText.CompareTo(((ResearchItem)NewData[Index + 1]).LabelText) < 0)
+                            {
+                                NewData.Insert(Index + 1, TempControl);
+                                break;
+                            }
+                            else if (((ResearchItem)TempControl).LabelText.CompareTo(((ResearchItem)NewData[Index + 1]).LabelText) == 0)
+                            {
+                                NewData.Insert(Index + 1, TempControl);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            NewData.Add(TempControl);
+                            break;
+                        }
                     }
-                    if (i > j)
+                    else
+                    {
+                        NewData.Insert(Index, TempControl);
                         break;
-                }
-                if (l < j)
-                {
-                    SortByName(data, l, j);
-                }
-                if (i < r)
-                {
-                    SortByName(data, i, r);
+                    }
+                    Index++;
                 }
             }
-        }
 
-        private static ControlCollection exchange(ControlCollection data, int m, int n)
-        {
-            Control temporary;
-
-            temporary = data[m];
-            data.SetChildIndex(data[m], n);
-            data.RemoveAt(n);
-            data.Add(temporary);
-            data.SetChildIndex(data[data.Count - 1], n);
-
-            return data;
+            data.Clear();
+            foreach (Control SortedData in NewData)
+            {
+                data.Add(SortedData);
+            }
         }
     }
 }
