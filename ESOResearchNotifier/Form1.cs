@@ -25,6 +25,7 @@ namespace ESOResearchNotifier
         private GitHubRelease LatestRelease = new GitHubRelease();
         private string LatestReleaseDownload;
         private bool UpdateReady = false;
+        private bool UpdateAvailable = false;
 
         public Form1()
         {
@@ -84,21 +85,33 @@ namespace ESOResearchNotifier
 
             ReadDump();
 
-            if (CheckUpdate())
+            AsyncMethodCaller caller = new AsyncMethodCaller(CheckUpdate);
+            IAsyncResult result = caller.BeginInvoke(UpdateCheckDone, null);
+        }
+
+        private void UpdateCheckDone(IAsyncResult result)
+        {
+            if (UpdateAvailable)
             {
-                btnUpdate.Visible = true;
-                btnUpdate.Enabled = true;
+                AsyncMethodCaller _caller = new AsyncMethodCaller(ShowUpdateButton);
+                btnUpdate.Invoke(_caller);
             }
         }
 
-        private bool CheckUpdate()
+        private void ShowUpdateButton()
+        {
+            btnUpdate.Visible = true;
+            btnUpdate.Enabled = true;
+        }
+
+        private void CheckUpdate()
         {
             HttpClient client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
-
             client.BaseAddress = new Uri("https://api.github.com");
             client.DefaultRequestHeaders.Add("User-Agent", "ESOResearchNotifier");
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            var sResult = client.GetStringAsync("/repos/gobbo1008/ESOResearchNotifier/releases/latest").Result;
+            client.Timeout = new TimeSpan(0, 0, 20);
+            var sResult = client.GetStringAsync("/repos/gobbo1008/ESOResearchNotifier/releases/latest").Result.ToString();
             GitHubRelease dResult = JsonConvert.DeserializeObject<GitHubRelease>(sResult);
             LatestRelease = dResult;
 
@@ -110,11 +123,7 @@ namespace ESOResearchNotifier
             {
                 GitHubDownload dDownload = JsonConvert.DeserializeObject<GitHubDownload>(LatestRelease.assets[0].ToString());
                 LatestReleaseDownload = dDownload.browser_download_url;
-                return true;
-            }
-            else
-            {
-                return false;
+                UpdateAvailable = true;
             }
         }
 
@@ -679,4 +688,6 @@ namespace ESOResearchNotifier
             }
         }
     }
+
+    public delegate void AsyncMethodCaller();
 }
