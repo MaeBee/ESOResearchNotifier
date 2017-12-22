@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Lua;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.IO.Compression;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using ToastNotifications;
-using Lua;
 using static System.Windows.Forms.Control;
-using System.Net;
-using Newtonsoft.Json;
-using System.ComponentModel;
 
 namespace ESOResearchNotifier
 {
@@ -23,9 +24,13 @@ namespace ESOResearchNotifier
         private List<string> SelectedCharacters = new List<string>();
         private string ConfigPath = Application.StartupPath + "\\ESOResearchNotifier.xml";
         private GitHubRelease LatestRelease = new GitHubRelease();
-        private string LatestReleaseDownload;
+        private GitHubRelease LatestReleaseAddon = new GitHubRelease();
+        private Queue<KeyValuePair<Uri, string>> Downloads = new Queue<KeyValuePair<Uri, string>>();
         private bool UpdateReady = false;
         private bool UpdateAvailable = false;
+        private bool ESORNUpdate = false;
+        private bool AddonUpdate = false;
+        WebClient client = new WebClient();
 
         public Form1()
         {
@@ -111,6 +116,8 @@ namespace ESOResearchNotifier
             client.DefaultRequestHeaders.Add("User-Agent", "ESOResearchNotifier");
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.Timeout = new TimeSpan(0, 0, 20);
+
+            #region ESOResearchNotifier
             var sResult = client.GetStringAsync("/repos/gobbo1008/ESOResearchNotifier/releases/latest").Result.ToString();
             GitHubRelease dResult = JsonConvert.DeserializeObject<GitHubRelease>(sResult);
             LatestRelease = dResult;
@@ -118,31 +125,107 @@ namespace ESOResearchNotifier
             string versionString = LatestRelease.tag_name.Remove(0, 1);
             Version RemoteVersion = new Version(versionString);
             Version LocalVersion = GetType().Assembly.GetName().Version;
-            
+
             if (LocalVersion.CompareTo(RemoteVersion) < 0)
             {
                 GitHubDownload dDownload = JsonConvert.DeserializeObject<GitHubDownload>(LatestRelease.assets[0].ToString());
-                LatestReleaseDownload = dDownload.browser_download_url;
+                Downloads.Enqueue(new KeyValuePair<Uri, string>(new Uri(dDownload.browser_download_url), Application.StartupPath + "\\ESOResearchNotifier.zip"));
+                ESORNUpdate = true;
                 UpdateAvailable = true;
             }
+            #endregion
+
+            #region ResearchDump
+            var sResultAddon = client.GetStringAsync("/repos/gobbo1008/ResearchDump/releases/latest").Result.ToString();
+            GitHubRelease dResultAddon = JsonConvert.DeserializeObject<GitHubRelease>(sResultAddon);
+            LatestReleaseAddon = dResultAddon;
+
+            string versionStringAddon = LatestReleaseAddon.tag_name.Remove(0, 1);
+            Version RemoteVersionAddon = new Version(versionStringAddon);
+            Version LocalVersionAddon = new Version("0.0");
+
+            string addonLua = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Elder Scrolls Online\\live\\addons\\ResearchDump\\ResearchDump.lua").ToString();
+            if (File.Exists(addonLua))
+            {
+                TextReader reader = File.OpenText(addonLua);
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.StartsWith("ResearchDump.version"))
+                    {
+                        string version = line.Substring(23);
+                        LocalVersionAddon = new Version(version);
+                        break;
+                    }
+                }
+                reader.Close();
+            }
+
+            if (LocalVersionAddon.CompareTo(RemoteVersionAddon) < 0)
+            {
+                GitHubDownload dDownload = JsonConvert.DeserializeObject<GitHubDownload>(LatestReleaseAddon.assets[0].ToString());
+                Downloads.Enqueue(new KeyValuePair<Uri, string>(new Uri(dDownload.browser_download_url), Application.StartupPath + "\\ResearchDump.zip"));
+                AddonUpdate = true;
+                UpdateAvailable = true;
+            }
+            #endregion
         }
+
 
         private void DoUpdate()
         {
-            WebClient client = new WebClient();
             client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
             client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
-            client.DownloadFileAsync(new Uri(LatestReleaseDownload), @"" + Application.StartupPath + "\\ESOResearchNotifier.zip");
+            DoDownload();
+        }
+
+        private void DoDownload()
+        {
+            KeyValuePair<Uri, string> DownloadItem = Downloads.Dequeue();
+            client.DownloadFileAsync(DownloadItem.Key, DownloadItem.Value);
         }
 
         private void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            btnUpdate.Text = "Update ready!";
-            btnUpdate.Visible = true;
-            btnUpdate.Enabled = true;
-            prgUpdate.Visible = false;
-            prgUpdate.Enabled = false;
-            UpdateReady = true;
+            if (Downloads.Count > 0)
+            {
+                DoDownload();
+            }
+            else
+            {
+                if (AddonUpdate)
+                {
+                    if (!Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Elder Scrolls Online\\live\\addons\\ResearchDump\\")))
+                    {
+                        Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Elder Scrolls Online\\live\\addons\\ResearchDump\\"));
+                    }
+
+                    ZipArchive Archive = ZipFile.OpenRead(Application.StartupPath + "\\ResearchDump.zip");
+                    foreach (ZipArchiveEntry Entry in Archive.Entries)
+                    {
+                        if ((Entry.Name.Contains(".")) && (Entry.Name != "README.md"))
+                        {
+                            Entry.ExtractToFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Elder Scrolls Online\\live\\addons\\ResearchDump\\") + Entry.FullName.Substring(13).Replace("/", "\\"), true);
+                        }
+                    }
+                    Archive.Dispose();
+                }
+                if (ESORNUpdate)
+                {
+                    btnUpdate.Text = "Update ready!";
+                    btnUpdate.Visible = true;
+                    btnUpdate.Enabled = true;
+                    prgUpdate.Visible = false;
+                    prgUpdate.Enabled = false;
+                    UpdateReady = true;
+                } else
+                {
+                    btnUpdate.Visible = false;
+                    btnUpdate.Enabled = false;
+                    prgUpdate.Visible = false;
+                    prgUpdate.Enabled = false;
+                }
+            }
         }
 
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
