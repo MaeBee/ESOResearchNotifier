@@ -111,6 +111,7 @@ namespace ESOResearchNotifier
 
         private void CheckUpdate()
         {
+
             HttpClient client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
             client.BaseAddress = new Uri("https://api.github.com");
             client.DefaultRequestHeaders.Add("User-Agent", "ESOResearchNotifier");
