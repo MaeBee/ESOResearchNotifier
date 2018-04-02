@@ -111,6 +111,7 @@ namespace ESOResearchNotifier
 
         private void CheckUpdate()
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             HttpClient client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
             client.BaseAddress = new Uri("https://api.github.com");
