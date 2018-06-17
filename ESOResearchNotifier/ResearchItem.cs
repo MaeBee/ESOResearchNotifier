@@ -14,14 +14,16 @@ namespace ESOResearchNotifier
     {
         public event EventHandler ResearchDone;
 
-        public enum CraftingType { Stable = 0, Blacksmithing = 1, Clothier = 2, Woodworking = 6 };
+        public enum CraftingType { Stable = 0, Blacksmithing = 1, Clothier = 2, Woodworking = 6, Jewelry = 7 };
         public int[] BlacksmithingTypes = { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1 };
         public string[] BlacksmithNames = { "Axe", "Mace", "Sword", "Battle Axe", "Maul", "Greatsword", "Dagger", "Cuirass", "Sabatons", "Gauntlets", "Helm", "Greaves", "Pauldron", "Girdle" };
         public int[] ClothierTypes = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
         public string[] ClothierNames = { "Robe", "Shoes", "Gloves", "Hat", "Breeches", "Epaulets", "Sash", "Jack", "Boots", "Bracers", "Helmet", "Guards", "Arm Cops", "Belt" };
         public int[] WoodworkingTypes = { 0, 0, 0, 0, 0, 1 };
         public string[] WoodworkingNames = { "Bow", "Inferno Staff", "Ice Staff", "Lightning Staff", "Restoration Staff", "Shield" };
-        public string[,] Traits  = {{ "Powered", "Charged", "Precise", "Infused", "Defending", "Training", "Sharpened", "Decisive", "Nirnhoned" }, { "Sturdy", "Impenetrable", "Reinforced", "Well-Fitted", "Training", "Infused", "Prosperous", "Divines", "Nirnhoned" }};
+        public int[] JewelryTypes = { 2, 2 };
+        public string[] JewelryNames = { "Necklace", "Ring" };
+        public string[,] Traits  = {{ "Powered", "Charged", "Precise", "Infused", "Defending", "Training", "Sharpened", "Decisive", "Nirnhoned" }, { "Sturdy", "Impenetrable", "Reinforced", "Well-Fitted", "Training", "Infused", "Prosperous", "Divines", "Nirnhoned" }, { "Arcane", "Healthy", "Robust", "Triune", "Infused", "Protective", "Swift", "Harmony", "Bloodthirsty" }};
 
         public string CharacterName { get; set; } = "";
         public CraftingType CraftingDiscipline { get; set; }
@@ -40,6 +42,8 @@ namespace ESOResearchNotifier
                         return ClothierNames[ItemIndex];
                     case CraftingType.Woodworking:
                         return WoodworkingNames[ItemIndex];
+                    case CraftingType.Jewelry:
+                        return JewelryNames[ItemIndex];
                     default:
                         return null;
                 }
@@ -60,6 +64,8 @@ namespace ESOResearchNotifier
                         return Traits[ClothierTypes[ItemIndex], TraitIndex];
                     case CraftingType.Woodworking:
                         return Traits[WoodworkingTypes[ItemIndex], TraitIndex];
+                    case CraftingType.Jewelry:
+                        return Traits[JewelryTypes[ItemIndex], TraitIndex];
                     default:
                         return null;
                 }
