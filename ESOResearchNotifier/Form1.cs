@@ -120,7 +120,7 @@ namespace ESOResearchNotifier
             client.Timeout = new TimeSpan(0, 0, 20);
 
             #region ESOResearchNotifier
-            var sResult = client.GetStringAsync("/repos/gobbo1008/ESOResearchNotifier/releases/latest").Result.ToString();
+            var sResult = client.GetStringAsync("/repos/maebee/ESOResearchNotifier/releases/latest").Result.ToString();
             GitHubRelease dResult = JsonConvert.DeserializeObject<GitHubRelease>(sResult);
             LatestRelease = dResult;
 
@@ -138,7 +138,7 @@ namespace ESOResearchNotifier
             #endregion
 
             #region ResearchDump
-            var sResultAddon = client.GetStringAsync("/repos/gobbo1008/ResearchDump/releases/latest").Result.ToString();
+            var sResultAddon = client.GetStringAsync("/repos/maebee/ResearchDump/releases/latest").Result.ToString();
             GitHubRelease dResultAddon = JsonConvert.DeserializeObject<GitHubRelease>(sResultAddon);
             LatestReleaseAddon = dResultAddon;
 
@@ -262,8 +262,8 @@ namespace ESOResearchNotifier
         {
             ResearchItem Item = (ResearchItem)sender;
             ShowNotification(Item.ItemName + " - " + Item.TraitName + " has finished for " + Item.CharacterName + "!");
-            panelResearch.Controls.Remove(Item);
             Item.Dispose();
+            panelResearch.Controls.Remove(Item);
         }
 
         private void ReadDump()
@@ -304,27 +304,27 @@ namespace ESOResearchNotifier
             ExpandTree();
         }
 
-        private void fileSystemWatcher1_Changed(object sender, System.IO.FileSystemEventArgs e)
+        private void FileSystemWatcher1_Changed(object sender, System.IO.FileSystemEventArgs e)
         {
             System.Threading.Thread.Sleep(500);
             ReadDump();
             EvaluateTreeView();
         }
 
-        private void menuItemMain_Click(object sender, EventArgs e)
+        private void MenuItemMain_Click(object sender, EventArgs e)
         {
             Show();
             this.WindowState = FormWindowState.Normal;
         }
 
-        private void menuItemMute_Click(object sender, EventArgs e)
+        private void MenuItemMute_Click(object sender, EventArgs e)
         {
             Mute = menuItemMute.Checked;
             Config["mute"] = Mute.ToString();
             XML.WriteData(ConfigPath, Config, SelectedCharacters);
         }
         
-        private void menuItemExit_Click(object sender, EventArgs e)
+        private void MenuItemExit_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -344,23 +344,23 @@ namespace ESOResearchNotifier
             ExpandTree();
         }
 
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void NotifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Show();
             this.WindowState = FormWindowState.Normal;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             ShowNotification("This is a test.");
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/gobbo1008/ResearchDump/releases/latest");
         }
         
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LinkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://tamrieltradecentre.com/");
         }
@@ -402,6 +402,14 @@ namespace ESOResearchNotifier
 
         private void EvaluateTreeView()
         {
+            List<string> DisciplineWhitelist = new List<string>();
+            foreach (CheckBox box in grpFilters.Controls)
+            {
+                if (box.Checked)
+                {
+                    DisciplineWhitelist.Add((string)box.Tag);
+                }
+            }
 
             List<string> newSelectedCharacters = new List<string>();
             foreach (Control tempControl in panelResearch.Controls)
@@ -419,63 +427,66 @@ namespace ESOResearchNotifier
                         newSelectedCharacters.Add(CharacterNode.Text);
                         foreach (KeyValuePair<string, object> CraftingDiscipline in (Dictionary<string, object>)CharacterNode.MetaValue)
                         {
-                            if (CraftingDiscipline.Key == "0")
+                            if (DisciplineWhitelist.Contains(CraftingDiscipline.Key))
                             {
-                                ResearchItem tItem = new ResearchItem();
-                                tItem.CharacterName = CharacterNode.Text;
-                                tItem.CraftingDiscipline = ResearchItem.CraftingType.Stable;
-                                DateTime FinishTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                                FinishTime = FinishTime.AddSeconds(Convert.ToDouble(CraftingDiscipline.Value)).ToLocalTime();
-                                tItem.FinishTime = FinishTime;
-                                tItem.Duration = new TimeSpan(20, 0, 0);
-                                if (tItem.TimeLeft.Ticks > 0)
+                                if (CraftingDiscipline.Key == "0")
                                 {
-                                    tItem.ResearchDone += new EventHandler(ResearchDone);
-                                    tItem.Setup();
-                                    panelResearch.Controls.Add(tItem);
-                                }
-                            }
-                            else if (CraftingDiscipline.Key != "version")
-                            {
-                                ResearchItem.CraftingType craftType = (ResearchItem.CraftingType)Convert.ToInt32(CraftingDiscipline.Key);
-                                foreach (KeyValuePair<string, object> item in (Dictionary<string, object>)CraftingDiscipline.Value)
-                                {
-                                    int itemIndex = Convert.ToInt32(item.Key) - 1;
-                                    foreach (KeyValuePair<string, object> trait in (Dictionary<string, object>)item.Value)
+                                    ResearchItem tItem = new ResearchItem();
+                                    tItem.CharacterName = CharacterNode.Text;
+                                    tItem.CraftingDiscipline = ResearchItem.CraftingType.Stable;
+                                    DateTime FinishTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                                    FinishTime = FinishTime.AddSeconds(Convert.ToDouble(CraftingDiscipline.Value)).ToLocalTime();
+                                    tItem.FinishTime = FinishTime;
+                                    tItem.Duration = new TimeSpan(20, 0, 0);
+                                    if (tItem.TimeLeft.Ticks > 0)
                                     {
-                                        int traitIndex = Convert.ToInt32(trait.Key) - 1;
-                                        double finishTime = 0;
-                                        double duration = 0;
-                                        foreach (KeyValuePair<string, object> variable in (Dictionary<string, object>)trait.Value)
+                                        tItem.ResearchDone += new EventHandler(ResearchDone);
+                                        tItem.Setup();
+                                        panelResearch.Controls.Add(tItem);
+                                    }
+                                }
+                                else if (CraftingDiscipline.Key != "version")
+                                {
+                                    ResearchItem.CraftingType craftType = (ResearchItem.CraftingType)Convert.ToInt32(CraftingDiscipline.Key);
+                                    foreach (KeyValuePair<string, object> item in (Dictionary<string, object>)CraftingDiscipline.Value)
+                                    {
+                                        int itemIndex = Convert.ToInt32(item.Key) - 1;
+                                        foreach (KeyValuePair<string, object> trait in (Dictionary<string, object>)item.Value)
                                         {
-                                            if (variable.Key == "finishTime")
+                                            int traitIndex = Convert.ToInt32(trait.Key) - 1;
+                                            double finishTime = 0;
+                                            double duration = 0;
+                                            foreach (KeyValuePair<string, object> variable in (Dictionary<string, object>)trait.Value)
                                             {
-                                                finishTime = Convert.ToDouble(variable.Value);
+                                                if (variable.Key == "finishTime")
+                                                {
+                                                    finishTime = Convert.ToDouble(variable.Value);
+                                                }
+                                                else if (variable.Key == "duration")
+                                                {
+                                                    duration = Convert.ToDouble(variable.Value);
+                                                }
                                             }
-                                            else if (variable.Key == "duration")
+                                            if (finishTime > 0)
                                             {
-                                                duration = Convert.ToDouble(variable.Value);
-                                            }
-                                        }
-                                        if (finishTime > 0)
-                                        {
-                                            ResearchItem tItem = new ResearchItem();
-                                            tItem.CharacterName = CharacterNode.Text;
-                                            tItem.CraftingDiscipline = craftType;
-                                            DateTime FinishTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-                                            FinishTime = FinishTime.AddSeconds(finishTime).ToLocalTime();
-                                            tItem.FinishTime = FinishTime;
-                                            DateTime durationHelper = new DateTime();
-                                            durationHelper = durationHelper.AddSeconds(duration);
-                                            tItem.Duration = durationHelper - DateTime.MinValue;
-                                            tItem.TraitIndex = traitIndex;
-                                            tItem.ItemIndex = itemIndex;
-                                            if (tItem.TimeLeft.Ticks > 0)
-                                            {
-                                                // MessageBox.Show(tItem.CraftingDiscipline.ToString() + " - " + tItem.ItemName + " - " + tItem.TraitName + " " + tItem.TimeLeftString);
-                                                tItem.ResearchDone += new EventHandler(ResearchDone);
-                                                tItem.Setup();
-                                                panelResearch.Controls.Add(tItem);
+                                                ResearchItem tItem = new ResearchItem();
+                                                tItem.CharacterName = CharacterNode.Text;
+                                                tItem.CraftingDiscipline = craftType;
+                                                DateTime FinishTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                                                FinishTime = FinishTime.AddSeconds(finishTime).ToLocalTime();
+                                                tItem.FinishTime = FinishTime;
+                                                DateTime durationHelper = new DateTime();
+                                                durationHelper = durationHelper.AddSeconds(duration);
+                                                tItem.Duration = durationHelper - DateTime.MinValue;
+                                                tItem.TraitIndex = traitIndex;
+                                                tItem.ItemIndex = itemIndex;
+                                                if (tItem.TimeLeft.Ticks > 0)
+                                                {
+                                                    // MessageBox.Show(tItem.CraftingDiscipline.ToString() + " - " + tItem.ItemName + " - " + tItem.TraitName + " " + tItem.TimeLeftString);
+                                                    tItem.ResearchDone += new EventHandler(ResearchDone);
+                                                    tItem.Setup();
+                                                    panelResearch.Controls.Add(tItem);
+                                                }
                                             }
                                         }
                                     }
@@ -586,6 +597,11 @@ namespace ESOResearchNotifier
             SendMessage(tvw.Handle, TVM_SETITEM, IntPtr.Zero, ref tvi);
         }
         #endregion
+
+        private void Filter_CheckedChanged(object sender, EventArgs e)
+        {
+            EvaluateTreeView();
+        }
     }
 
     public class ComboboxItem
@@ -677,11 +693,11 @@ namespace ESOResearchNotifier
                 int Index = 0;
                 foreach (Control LowControl in NewData)
                 {
-                    if (((ResearchItem)TempControl).FinishTime > ((ResearchItem)LowControl).FinishTime)
+                    if (((ResearchItem)TempControl).FinishTime < ((ResearchItem)LowControl).FinishTime)
                     {
                         if (NewData.Count > Index + 1)
                         {
-                            if (((ResearchItem)TempControl).FinishTime < ((ResearchItem)NewData[Index + 1]).FinishTime)
+                            if (((ResearchItem)TempControl).FinishTime > ((ResearchItem)NewData[Index + 1]).FinishTime)
                             {
                                 NewData.Insert(Index + 1, TempControl);
                                 break;
@@ -736,11 +752,11 @@ namespace ESOResearchNotifier
                 int Index = 0;
                 foreach (Control LowControl in NewData)
                 {
-                    if (((ResearchItem)TempControl).LabelText.CompareTo(((ResearchItem)LowControl).LabelText) > 0)
+                    if (((ResearchItem)TempControl).LabelText.CompareTo(((ResearchItem)LowControl).LabelText) < 0)
                     {
                         if (NewData.Count > Index + 1)
                         {
-                            if (((ResearchItem)TempControl).LabelText.CompareTo(((ResearchItem)NewData[Index + 1]).LabelText) < 0)
+                            if (((ResearchItem)TempControl).LabelText.CompareTo(((ResearchItem)NewData[Index + 1]).LabelText) > 0)
                             {
                                 NewData.Insert(Index + 1, TempControl);
                                 break;

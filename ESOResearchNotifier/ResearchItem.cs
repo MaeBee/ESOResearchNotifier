@@ -124,29 +124,34 @@ namespace ESOResearchNotifier
         public ResearchItem()
         {
             InitializeComponent();
+            //this.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            this.Dock = DockStyle.Top;
         }
 
         public void Setup()
         {
-            if (TimeLeft.TotalSeconds <= 0 && !Done)
-            {
-                Done = true;
-                ResearchDone?.Invoke(this, new EventArgs());
-                return;
-            }
-            if (!timerTick.Enabled && !Done)
-            {
-                timerTick.Start();
-            }
+            timerDone.Interval = (int)TimeLeft.TotalMilliseconds;
+            timerDone.Start();
+            prgTime.Value = (int)((TimeDone.TotalSeconds / Duration.TotalSeconds) * 100);
+            toolTip1.SetToolTip(prgTime, TimeDone.ToString(@"dd\.hh\:mm\:ss") + " of " + Duration.ToString(@"dd\.hh\:mm\:ss") + " done.");
+            SetLabelText();
+            timerTick.Start();
+            Update();
+        }
+
+        private void timerTick_Tick(object sender, EventArgs e)
+        {
             prgTime.Value = (int)((TimeDone.TotalSeconds / Duration.TotalSeconds) * 100);
             toolTip1.SetToolTip(prgTime, TimeDone.ToString(@"dd\.hh\:mm\:ss") + " of " + Duration.ToString(@"dd\.hh\:mm\:ss") + " done.");
             SetLabelText();
             Update();
         }
 
-        private void timerTick_Tick(object sender, EventArgs e)
+        private void timerDone_Tick(object sender, EventArgs e)
         {
-            Setup();
+            timerDone.Stop();
+            Done = true;
+            ResearchDone?.Invoke(this, new EventArgs());
         }
     }
 }

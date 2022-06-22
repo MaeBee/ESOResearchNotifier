@@ -45,10 +45,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.panelResearch = new System.Windows.Forms.FlowLayoutPanel();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.panelResearch = new System.Windows.Forms.Panel();
             this.btnSortDefault = new System.Windows.Forms.Button();
             this.btnSortName = new System.Windows.Forms.Button();
             this.btnSortTime = new System.Windows.Forms.Button();
@@ -57,11 +57,18 @@
             this.lblName = new System.Windows.Forms.Label();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.prgUpdate = new System.Windows.Forms.ProgressBar();
+            this.grpFilters = new System.Windows.Forms.GroupBox();
+            this.chkRiding = new System.Windows.Forms.CheckBox();
+            this.chkBlacksmithing = new System.Windows.Forms.CheckBox();
+            this.chkClothier = new System.Windows.Forms.CheckBox();
+            this.chkWoodworking = new System.Windows.Forms.CheckBox();
+            this.chkJewelry = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.notifyMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.grpFilters.SuspendLayout();
             this.SuspendLayout();
             // 
             // fileSystemWatcher1
@@ -69,7 +76,7 @@
             this.fileSystemWatcher1.EnableRaisingEvents = true;
             this.fileSystemWatcher1.Filter = "ResearchDump.lua";
             this.fileSystemWatcher1.SynchronizingObject = this;
-            this.fileSystemWatcher1.Changed += new System.IO.FileSystemEventHandler(this.fileSystemWatcher1_Changed);
+            this.fileSystemWatcher1.Changed += new System.IO.FileSystemEventHandler(this.FileSystemWatcher1_Changed);
             // 
             // notifyIcon1
             // 
@@ -79,7 +86,7 @@
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "ESO Research Notifier";
             this.notifyIcon1.Visible = true;
-            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
+            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.NotifyIcon1_MouseDoubleClick);
             // 
             // notifyMenuStrip1
             // 
@@ -97,7 +104,7 @@
             this.menuItemMain.Size = new System.Drawing.Size(148, 22);
             this.menuItemMain.Text = "Main Window";
             this.menuItemMain.ToolTipText = "Show the main window";
-            this.menuItemMain.Click += new System.EventHandler(this.menuItemMain_Click);
+            this.menuItemMain.Click += new System.EventHandler(this.MenuItemMain_Click);
             // 
             // menuItemMute
             // 
@@ -106,7 +113,7 @@
             this.menuItemMute.Size = new System.Drawing.Size(148, 22);
             this.menuItemMute.Text = "Mute";
             this.menuItemMute.ToolTipText = "Stop notifications from popping up";
-            this.menuItemMute.Click += new System.EventHandler(this.menuItemMute_Click);
+            this.menuItemMute.Click += new System.EventHandler(this.MenuItemMute_Click);
             // 
             // menuItemExit
             // 
@@ -114,7 +121,7 @@
             this.menuItemExit.Size = new System.Drawing.Size(148, 22);
             this.menuItemExit.Text = "Exit";
             this.menuItemExit.ToolTipText = "Exit Application";
-            this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
+            this.menuItemExit.Click += new System.EventHandler(this.MenuItemExit_Click);
             // 
             // groupBox1
             // 
@@ -123,7 +130,7 @@
             this.groupBox1.Controls.Add(this.treeView1);
             this.groupBox1.Location = new System.Drawing.Point(685, 120);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(260, 295);
+            this.groupBox1.Size = new System.Drawing.Size(260, 189);
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
@@ -131,9 +138,10 @@
             // treeView1
             // 
             this.treeView1.CheckBoxes = true;
-            this.treeView1.Location = new System.Drawing.Point(9, 19);
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.Location = new System.Drawing.Point(3, 16);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(245, 270);
+            this.treeView1.Size = new System.Drawing.Size(254, 170);
             this.treeView1.TabIndex = 21;
             this.toolTip1.SetToolTip(this.treeView1, "Select the characters you want to track here. If an account or character does not" +
         " show up here, make sure to log in with that character whilst running the Resear" +
@@ -206,7 +214,7 @@
             this.button2.Text = "Test Notification";
             this.toolTip1.SetToolTip(this.button2, "Sends a test notification to verify appearance settings");
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // linkLabel1
             // 
@@ -219,18 +227,7 @@
             this.linkLabel1.Text = "ResearchDump AddOn";
             this.toolTip1.SetToolTip(this.linkLabel1, "ResearchDump provides ESO Research Notifier with the required data. Without it, E" +
         "SO Research Notifier won\'t do anything.");
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-            // 
-            // panelResearch
-            // 
-            this.panelResearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelResearch.AutoScroll = true;
-            this.panelResearch.Location = new System.Drawing.Point(6, 45);
-            this.panelResearch.Name = "panelResearch";
-            this.panelResearch.Size = new System.Drawing.Size(655, 413);
-            this.panelResearch.TabIndex = 7;
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel1_LinkClicked);
             // 
             // linkLabel2
             // 
@@ -242,17 +239,20 @@
             this.linkLabel2.TabStop = true;
             this.linkLabel2.Text = "Special thanks to Tamriel Trade Centre";
             this.toolTip1.SetToolTip(this.linkLabel2, "Lua.dll used for deserialisation kindly provided by TTC");
-            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabel2_LinkClicked);
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.panelResearch);
             this.groupBox3.Controls.Add(this.btnSortDefault);
             this.groupBox3.Controls.Add(this.btnSortName);
             this.groupBox3.Controls.Add(this.btnSortTime);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.lblDone);
             this.groupBox3.Controls.Add(this.lblName);
-            this.groupBox3.Controls.Add(this.panelResearch);
             this.groupBox3.Location = new System.Drawing.Point(12, 12);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(667, 464);
@@ -260,8 +260,21 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Research";
             // 
+            // panelResearch
+            // 
+            this.panelResearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelResearch.AutoScroll = true;
+            this.panelResearch.BackColor = System.Drawing.SystemColors.Control;
+            this.panelResearch.Location = new System.Drawing.Point(7, 46);
+            this.panelResearch.Name = "panelResearch";
+            this.panelResearch.Size = new System.Drawing.Size(654, 412);
+            this.panelResearch.TabIndex = 7;
+            // 
             // btnSortDefault
             // 
+            this.btnSortDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSortDefault.Location = new System.Drawing.Point(581, 17);
             this.btnSortDefault.Name = "btnSortDefault";
             this.btnSortDefault.Size = new System.Drawing.Size(80, 23);
@@ -282,6 +295,7 @@
             // 
             // btnSortTime
             // 
+            this.btnSortTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSortTime.Location = new System.Drawing.Point(363, 17);
             this.btnSortTime.Name = "btnSortTime";
             this.btnSortTime.Size = new System.Drawing.Size(39, 23);
@@ -292,6 +306,7 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(417, 22);
             this.label1.Name = "label1";
@@ -301,6 +316,7 @@
             // 
             // lblDone
             // 
+            this.lblDone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDone.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDone.Location = new System.Drawing.Point(286, 22);
             this.lblDone.Name = "lblDone";
@@ -338,11 +354,97 @@
             this.prgUpdate.TabIndex = 0;
             this.prgUpdate.Visible = false;
             // 
+            // grpFilters
+            // 
+            this.grpFilters.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpFilters.Controls.Add(this.chkJewelry);
+            this.grpFilters.Controls.Add(this.chkWoodworking);
+            this.grpFilters.Controls.Add(this.chkClothier);
+            this.grpFilters.Controls.Add(this.chkBlacksmithing);
+            this.grpFilters.Controls.Add(this.chkRiding);
+            this.grpFilters.Location = new System.Drawing.Point(685, 315);
+            this.grpFilters.Name = "grpFilters";
+            this.grpFilters.Size = new System.Drawing.Size(260, 98);
+            this.grpFilters.TabIndex = 22;
+            this.grpFilters.TabStop = false;
+            this.grpFilters.Text = "Filter";
+            // 
+            // chkRiding
+            // 
+            this.chkRiding.AutoSize = true;
+            this.chkRiding.Checked = true;
+            this.chkRiding.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkRiding.Location = new System.Drawing.Point(6, 19);
+            this.chkRiding.Name = "chkRiding";
+            this.chkRiding.Size = new System.Drawing.Size(56, 17);
+            this.chkRiding.TabIndex = 0;
+            this.chkRiding.Tag = "0";
+            this.chkRiding.Text = "Riding";
+            this.chkRiding.UseVisualStyleBackColor = true;
+            this.chkRiding.CheckedChanged += new System.EventHandler(this.Filter_CheckedChanged);
+            // 
+            // chkBlacksmithing
+            // 
+            this.chkBlacksmithing.AutoSize = true;
+            this.chkBlacksmithing.Checked = true;
+            this.chkBlacksmithing.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkBlacksmithing.Location = new System.Drawing.Point(6, 33);
+            this.chkBlacksmithing.Name = "chkBlacksmithing";
+            this.chkBlacksmithing.Size = new System.Drawing.Size(91, 17);
+            this.chkBlacksmithing.TabIndex = 1;
+            this.chkBlacksmithing.Tag = "1";
+            this.chkBlacksmithing.Text = "Blacksmithing";
+            this.chkBlacksmithing.UseVisualStyleBackColor = true;
+            this.chkBlacksmithing.CheckedChanged += new System.EventHandler(this.Filter_CheckedChanged);
+            // 
+            // chkClothier
+            // 
+            this.chkClothier.AutoSize = true;
+            this.chkClothier.Checked = true;
+            this.chkClothier.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkClothier.Location = new System.Drawing.Point(6, 47);
+            this.chkClothier.Name = "chkClothier";
+            this.chkClothier.Size = new System.Drawing.Size(61, 17);
+            this.chkClothier.TabIndex = 2;
+            this.chkClothier.Tag = "2";
+            this.chkClothier.Text = "Clothier";
+            this.chkClothier.UseVisualStyleBackColor = true;
+            this.chkClothier.CheckedChanged += new System.EventHandler(this.Filter_CheckedChanged);
+            // 
+            // chkWoodworking
+            // 
+            this.chkWoodworking.AutoSize = true;
+            this.chkWoodworking.Checked = true;
+            this.chkWoodworking.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkWoodworking.Location = new System.Drawing.Point(6, 61);
+            this.chkWoodworking.Name = "chkWoodworking";
+            this.chkWoodworking.Size = new System.Drawing.Size(92, 17);
+            this.chkWoodworking.TabIndex = 3;
+            this.chkWoodworking.Tag = "6";
+            this.chkWoodworking.Text = "Woodworking";
+            this.chkWoodworking.UseVisualStyleBackColor = true;
+            this.chkWoodworking.CheckedChanged += new System.EventHandler(this.Filter_CheckedChanged);
+            // 
+            // chkJewelry
+            // 
+            this.chkJewelry.AutoSize = true;
+            this.chkJewelry.Checked = true;
+            this.chkJewelry.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkJewelry.Location = new System.Drawing.Point(6, 75);
+            this.chkJewelry.Name = "chkJewelry";
+            this.chkJewelry.Size = new System.Drawing.Size(61, 17);
+            this.chkJewelry.TabIndex = 4;
+            this.chkJewelry.Tag = "7";
+            this.chkJewelry.Text = "Jewelry";
+            this.chkJewelry.UseVisualStyleBackColor = true;
+            this.chkJewelry.CheckedChanged += new System.EventHandler(this.Filter_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(956, 488);
+            this.Controls.Add(this.grpFilters);
             this.Controls.Add(this.prgUpdate);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.groupBox3);
@@ -350,9 +452,8 @@
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(900, 400);
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "ESO Research Notifier";
@@ -364,6 +465,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
+            this.grpFilters.ResumeLayout(false);
+            this.grpFilters.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -384,7 +487,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.FlowLayoutPanel panelResearch;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.ToolTip toolTip1;
         private FixedTreeView treeView1;
@@ -397,6 +499,13 @@
         private System.Windows.Forms.Button btnSortDefault;
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.ProgressBar prgUpdate;
+        private System.Windows.Forms.Panel panelResearch;
+        private System.Windows.Forms.GroupBox grpFilters;
+        private System.Windows.Forms.CheckBox chkBlacksmithing;
+        private System.Windows.Forms.CheckBox chkRiding;
+        private System.Windows.Forms.CheckBox chkJewelry;
+        private System.Windows.Forms.CheckBox chkWoodworking;
+        private System.Windows.Forms.CheckBox chkClothier;
     }
 }
 
